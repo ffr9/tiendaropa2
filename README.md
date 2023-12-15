@@ -48,22 +48,22 @@
   "id": int
 }
 ````
-    * 400: Formato de datos incorrecto.
-````json
+* 400: Formato de datos incorrecto.
+```json
 {
   "errors": {
     string,
     ...
   }
 }
-````
+```
 * Parámetros: No aplica.
 * Gestión de errores:
     * 400: Si el formato de datos es incorrecto.
     * 500: Error interno del servidor.
 * Ejemplo de uso:
     * Petición:
-````json
+```json
 POST localhost:8080/tiendaropa/registro
 
 Body:
@@ -74,12 +74,12 @@ Body:
   "telefono": "123456789",
   "contrasena": "securepassword"
 }
-````
-    * Respuesta:
-````json
+```
+* Respuesta
+```json
 201 Created
 
 {
   "id": 123
 }
-````
+```
