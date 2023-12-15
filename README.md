@@ -140,3 +140,56 @@ Body:
 Respuesta:  
 * 200 OK (Credenciales válidas)  
 * 401 Unauthorized (Credenciales inválidas)
+
+### GET Obtener página del catálogo de productos:
+
+* Breve descripción: Obtiene la página del catálogo de productos con la lista de productos disponibles.
+* Ruta: GET /tiendaropa/catalogo
+* Método: GET
+* Funcionalidad: Devuelve la página del catálogo de productos para que los usuarios vean los productos disponibles.
+* Estructura de la petición: No aplica (GET request).
+* Estructura de la respuesta: HTML de la página del catálogo de productos.
+* Parámetros: No aplica.
+* Gestión de errores:
+    * 404: Si la página del catálogo de productos no se encuentra.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:
+    * Petición: GET localhost:8080/tiendaropa/catalogo
+    * Respuesta: HTML de la página del catálogo de productos.
+ 
+### GET Obtener página del catálogo de productos con cierto filtro concreto:
+
+* Breve descripción: Obtiene la página del catálogo de productos aplicando un filtro específico.
+* Ruta: GET /tiendaropa/catalogo/filtro
+* Método: GET
+* Funcionalidad: Retorna la página del catálogo de productos con productos que cumplen un filtro específico.
+* Estructura de la petición: No aplica (GET request).
+* Estructura de la respuesta: HTML de la página del catálogo de productos con productos filtrados.
+* Parámetros:
+    * Query Params:
+        * filtro: string (Ej. "Ofertas")
+* Gestión de errores:
+    * 404: Si la página del catálogo con filtro no se encuentra.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:
+    * Petición: GET localhost:8080/tiendaropa/catalogo/filtro?filtro=Ofertas
+    * Respuesta: HTML de la página del catálogo de productos con productos en oferta.
+
+### GET Obtener página del catálogo de productos con cierta búsqueda:
+
+* Breve descripción: Obtiene la página del catálogo de productos con resultados específicos de búsqueda.
+* Ruta: GET /tiendaropa/catalogo/busqueda
+* Método: GET
+* Funcionalidad: Retorna la página del catálogo de productos con productos que coinciden con la búsqueda.
+* Estructura de la petición: No aplica (GET request).
+* Estructura de la respuesta: HTML de la página del catálogo de productos con resultados de búsqueda.
+* Parámetros:
+    * Query Params:
+        * q: string (Ej. "Camiseta")
+* Gestión de errores:
+    * 404: Si la página del catálogo con búsqueda no se encuentra.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:
+    * Petición: GET localhost:8080/tiendaropa/catalogo/busqueda?q=Camiseta
+    * Respuesta: HTML de la página del catálogo de productos con resultados de búsqueda para "Camiseta".
+
