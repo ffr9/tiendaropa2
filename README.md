@@ -32,7 +32,7 @@
 * Funcionalidad: Registra un nuevo usuario con la información proporcionada en el formulario de registro.
 * Estructura de la petición:
     * Body:
-´´´json
+````json
 {
   "nombre": string,
   "apellidos": string,
@@ -40,30 +40,30 @@
   "telefono": string,
   "contrasena": string
 }
-´´´
+````
 * Estructura de la respuesta:
     * 201: Se crea correctamente.
-´´´json
+````json
 {
   "id": int
 }
-´´´
+````
     * 400: Formato de datos incorrecto.
-´´´json
+````json
 {
   "errors": {
     string,
     ...
   }
 }
-´´´
+````
 * Parámetros: No aplica.
 * Gestión de errores:
     * 400: Si el formato de datos es incorrecto.
     * 500: Error interno del servidor.
 * Ejemplo de uso:
     * Petición:
-´´´json
+````json
 POST localhost:8080/tiendaropa/registro
 
 Body:
@@ -74,12 +74,12 @@ Body:
   "telefono": "123456789",
   "contrasena": "securepassword"
 }
-´´´
+````
     * Respuesta:
-´´´json
+````json
 201 Created
 
 {
   "id": 123
 }
-´´´
+````
