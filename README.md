@@ -41,13 +41,13 @@
   "contrasena": string
 }
 ````
-* Estructura de la respuesta:
+* Estructura de la respuesta:  
 201: Se crea correctamente.
 ````json
 {
   "id": int
 }
-````
+````  
 400: Formato de datos incorrecto.
 ```json
 {
@@ -61,7 +61,7 @@
 * Gestión de errores:
     * 400: Si el formato de datos es incorrecto.
     * 500: Error interno del servidor.
-* Ejemplo de uso:
+* Ejemplo de uso:  
 Petición:
 ```json
 POST localhost:8080/tiendaropa/registro
@@ -74,7 +74,7 @@ Body:
   "telefono": "123456789",
   "contrasena": "securepassword"
 }
-```
+```  
 Respuesta
 ```json
 201 Created
@@ -126,7 +126,7 @@ Respuesta
 * Gestión de errores:
     * 401: Si las credenciales son inválidas.
     * 500: Error interno del servidor.
-* Ejemplo de uso:
+* Ejemplo de uso:  
 Petición:
 ````json
 POST localhost:8080/tiendaropa/login
@@ -136,7 +136,7 @@ Body:
   "email": "john.doe@example.com",
   "contrasena": "securepassword"
 }
-````
-Respuesta:
-    * 200 OK (Credenciales válidas)
+````  
+Respuesta:  
+    * 200 OK (Credenciales válidas)  
     * 401 Unauthorized (Credenciales inválidas)
