@@ -295,3 +295,85 @@ Headers:
 Respuesta:
 * 204 No Content (Eliminado correctamente)
 * 404 Not Found (Producto no encontrado)
+
+### PUT Administrador modifica el producto de la base de datos:
+
+* Breve descripción: Modifica un producto en la base de datos.
+* Ruta: PUT /tiendaropa/productos/{id}
+* Método: PUT
+* Funcionalidad: Modifica un producto en la base de datos según su ID con la información proporcionada.
+* Estructura de la petición:
+    * Body:
+````json
+{
+  "nombre": string,
+  "precio": float,
+  "stock": int,
+  "numRef": string,
+  "destacado": boolean,
+  "categoriaId": int
+
+}
+````
+* Estructura de la respuesta:  
+200: Modificado correctamente.
+````json
+{
+  "id": int
+}
+```` 
+400: Formato de datos incorrecto.
+````json
+{
+  "errors": {
+    string,
+    ...
+  }
+}
+````` 
+404: Producto no encontrado.
+* Parámetros:
+    * Path Params:
+        * id: int (ID del producto a modificar)
+    * Headers:
+        * Authorization: string (Token de administrador)
+* Gestión de errores:
+    * 400: Si el formato de datos es incorrecto.
+    * 401: Si la autorización es incorrecta.
+    * 404: Si el producto no se encuentra.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:  
+Petición:
+````json
+PUT localhost:8080/tiendaropa/productos/456
+
+Headers:
+{
+  "Authorization": "Bearer <token>"
+}
+
+Body:
+{
+  "nombre": "Camiseta Deportiva",
+  "precio": 34.99,
+  "stock": 40,
+  "numRef": "CD123",
+  "destacado": true,
+  "categoriaId": 1
+}
+````  
+Respuesta:
+````json
+200 OK
+
+{
+  "id": 456
+}
+````
+````json
+404 Not Found
+
+{
+  "error": "Producto no encontrado"
+}
+````
