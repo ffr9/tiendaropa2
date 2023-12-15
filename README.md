@@ -192,4 +192,106 @@ Respuesta:
 * Ejemplo de uso:
     * Petición: GET localhost:8080/tiendaropa/catalogo/busqueda?q=Camiseta
     * Respuesta: HTML de la página del catálogo de productos con resultados de búsqueda para "Camiseta".
+ 
+### POST Administrador crea nuevo producto en la base de datos:
 
+* Breve descripción: Crea un nuevo producto en la base de datos.
+* Ruta: POST /tiendaropa/productos
+* Método: POST
+* Funcionalidad: Crea un nuevo producto en la base de datos con la información proporcionada.
+* Estructura de la petición:
+    * Body:
+````json
+{
+  "nombre": string,
+  "precio": float,
+  "stock": int,
+  "numRef": string,
+  "destacado": boolean,
+  "categoriaId": int
+}
+````
+* Estructura de la respuesta:  
+201: Se crea correctamente.
+````json
+{
+  "id": int
+}
+````  
+400: Formato de datos incorrecto.
+````json
+{
+  "errors": {
+    string,
+    ...
+  }
+}
+````
+* Parámetros:
+    * Headers:
+        * Authorization: string (Token de administrador)
+* Gestión de errores:
+    * 400: Si el formato de datos es incorrecto.
+    * 401: Si la autorización es incorrecta.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:  
+Petición:
+````json
+POST localhost:8080/tiendaropa/productos
+
+Headers:
+{
+  "Authorization": "Bearer <token>"
+}
+
+Body:
+{
+  "nombre": "Camiseta Deportiva",
+  "precio": 29.99,
+  "stock": 50,
+  "numRef": "CD123",
+  "destacado": true,
+  "categoriaId": 1
+}
+````  
+Respuesta:
+````json
+201 Created
+
+{
+  "id": 456
+}
+````
+
+### DELETE Administrador elimina producto de la base de datos:
+
+* Breve descripción: Elimina un producto de la base de datos.
+* Ruta: DELETE /tiendaropa/productos/{id}
+* Método: DELETE
+* Funcionalidad: Elimina un producto de la base de datos según su ID.
+* Estructura de la petición: No aplica (DELETE request).
+* Estructura de la respuesta:
+     * 204: Eliminado correctamente.
+     * 404: Producto no encontrado.
+* Parámetros:
+    * Path Params:
+        * id: int (ID del producto a eliminar)
+    * Headers:
+        * Authorization: string (Token de administrador)
+* Gestión de errores:
+    * 401: Si la autorización es incorrecta.
+    * 404: Si el producto no se encuentra.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:  
+Petición:
+````json
+DELETE localhost:8080/tiendaropa/productos/456
+
+Headers:
+{
+  "Authorization": "Bearer <token>"
+}
+````  
+Respuesta:
+* 204 No Content (Eliminado correctamente)
+* 404 Not Found (Producto no encontrado)
