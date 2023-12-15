@@ -138,5 +138,5 @@ Body:
 }
 ````  
 Respuesta:  
-    * 200 OK (Credenciales válidas)  
-    * 401 Unauthorized (Credenciales inválidas)
+* 200 OK (Credenciales válidas)  
+* 401 Unauthorized (Credenciales inválidas)
