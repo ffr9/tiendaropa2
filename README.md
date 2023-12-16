@@ -377,3 +377,588 @@ Respuesta:
   "error": "Producto no encontrado"
 }
 ````
+
+### GET Obtener página con los detalles del producto concreto:
+
+* Breve descripción: Obtiene la página con los detalles de un producto específico.
+* Ruta: GET /tiendaropa/productos/{id}
+* Método: GET
+* Funcionalidad: Retorna la página con los detalles de un producto específico.
+* Estructura de la petición: No aplica (GET request).
+* Estructura de la respuesta: HTML de la página con los detalles del producto.
+* Parámetros:
+    * Path Params:
+        * id: int (ID del producto)
+* Gestión de errores:
+    * 404: Si el producto no se encuentra.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:
+* Petición: GET localhost:8080/tiendaropa/productos/456
+* Respuesta: HTML de la página con los detalles del producto.
+
+### POST Mandar el producto concreto al carrito de la compra:
+
+* Breve descripción: Agrega un producto específico al carrito de la compra.
+* Ruta: POST /tiendaropa/carrito
+* Método: POST
+* Funcionalidad: Agrega un producto al carrito de la compra.
+* Estructura de la petición:
+    * Body:
+````json
+{
+  "usuarioId": int,
+  "productoId": int,
+  "cantidad": int
+}
+````
+* Estructura de la respuesta:  
+201: Agregado al carrito correctamente.
+````json
+{
+  "id": int
+}
+````  
+400: Formato de datos incorrecto o cantidad no disponible.
+````json
+{
+  "errors": {
+    string,
+    ...
+  }
+}
+````
+* Parámetros:
+    * Headers:
+        * Authorization: string (Token de usuario)
+* Gestión de errores:
+    * 400: Si el formato de datos es incorrecto o la cantidad no está disponible.
+    * 401: Si la autorización es incorrecta.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:  
+Petición:
+````json
+POST localhost:8080/tiendaropa/carrito
+
+Headers:
+{
+  "Authorization": "Bearer <token>"
+}
+
+Body:
+{
+  "usuarioId": 123,
+  "productoId": 456,
+  "cantidad": 2
+}
+````  
+Respuesta:
+````json
+201 Created
+
+{
+  "id": 789
+}
+````
+````json
+400 Bad Request
+
+{
+  "errors": {
+    "cantidad": "La cantidad no está disponible"
+  }
+}
+````
+
+### DELETE Administrador elimina producto de la base de datos:
+
+* Breve descripción: Elimina un producto específico de la base de datos.
+* Ruta: DELETE /tiendaropa/productos/{id}
+* Método: DELETE
+* Funcionalidad: Elimina un producto específico de la base de datos según su ID.
+* Estructura de la petición: No aplica (DELETE request).
+* Estructura de la respuesta:
+    * 204: Eliminado correctamente.
+    * 404: Producto no encontrado.
+* Parámetros:
+    * Path Params:
+        * id: int (ID del producto a eliminar)
+    * Headers:
+        * Authorization: string (Token de administrador)
+* Gestión de errores:
+    * 401: Si la autorización es incorrecta.
+    * 404: Si el producto no se encuentra.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:  
+Petición:
+````json
+DELETE localhost:8080/tiendaropa/productos/456
+
+Headers:
+{
+  "Authorization": "Bearer <token>"
+}
+````  
+Respuesta:
+* 204 No Content (Eliminado correctamente)
+* 404 Not Found (Producto no encontrado)
+
+### PUT Administrador modifica el producto de la base de datos:
+
+* Breve descripción: Modifica un producto específico en la base de datos.
+* Ruta: PUT /tiendaropa/productos/{id}
+* Método: PUT
+* Funcionalidad: Modifica un producto en la base de datos según su ID con la información proporcionada.
+* Estructura de la petición:
+    * Body:
+````json
+{
+  "nombre": string,
+  "precio": float,
+  "stock": int,
+  "numRef": string,
+  "destacado": boolean,
+  "categoriaId": int
+}
+````
+* Estructura de la respuesta:  
+200: Modificado correctamente.
+````json
+{
+  "id": int
+}
+````  
+400: Formato de datos incorrecto.
+````json
+{
+  "errors": {
+    string,
+    ...
+  }
+}
+````  
+404: Producto no encontrado.
+* Parámetros:
+    * Path Params:
+        * id: int (ID del producto a modificar)
+    * Headers:
+        * Authorization: string (Token de administrador)
+* Gestión de errores:
+    * 400: Si el formato de datos es incorrecto.
+    * 401: Si la autorización es incorrecta.
+    * 404: Si el producto no se encuentra.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:  
+Petición:
+````json
+PUT localhost:8080/tiendaropa/productos/456
+
+Headers:
+{
+  "Authorization": "Bearer <token>"
+}
+
+Body:
+{
+  "nombre": "Camiseta Deportiva",
+  "precio": 34.99,
+  "stock": 40,
+  "numRef": "CD123",
+  "destacado": true,
+  "categoriaId": 1
+}
+````  
+Respuesta:
+````json
+200 OK
+
+{
+  "id": 456
+}
+````
+````json
+404 Not Found
+
+{
+  "error": "Producto no encontrado"
+}
+````
+
+### GET Obtener carrito de la compra:
+
+* Breve descripción: Obtiene el contenido actual del carrito de la compra de un usuario.
+* Ruta: GET /tiendaropa/carrito
+* Método: GET
+* Funcionalidad: Retorna la información del carrito de la compra de un usuario.
+* Estructura de la petición: No aplica (GET request).
+* Estructura de la respuesta:
+    * 200: Carrito obtenido correctamente.
+````json
+{
+  "productos": [
+    {
+      "id": int,
+      "nombre": string,
+      "precio": float,
+      "cantidad": int
+    },
+    ...
+  ],
+  "total": float
+}
+````
+* Parámetros:
+    * Headers:
+        * Authorization: string (Token de usuario)
+* Gestión de errores:
+    * 401: Si la autorización es incorrecta.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:  
+Petición:
+````json
+GET localhost:8080/tiendaropa/carrito
+
+Headers:
+{
+  "Authorization": "Bearer <token>"
+}
+````  
+Respuesta:
+````json
+200 OK
+
+{
+  "productos": [
+    {
+      "id": 456,
+      "nombre": "Camiseta Deportiva",
+      "precio": 34.99,
+      "cantidad": 2
+    }
+  ],
+  "total": 69.98
+}
+````
+
+### GET Continuar con la compra y obtener método de pago:
+
+* Breve descripción: Obtiene el método de pago disponible para continuar con la compra.
+* Ruta: GET /tiendaropa/compra/metodopago
+* Método: GET
+* Funcionalidad: Retorna el método de pago disponible para continuar con la compra.
+* Estructura de la petición: No aplica (GET request).
+* Estructura de la respuesta:
+    * 200: Método de pago obtenido correctamente.
+````json
+{
+  "metodo": string
+}
+````
+* Parámetros:
+    * Headers:
+        * Authorization: string (Token de usuario)
+* Gestión de errores:
+    * 401: Si la autorización es incorrecta.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:  
+Petición:
+````json
+GET localhost:8080/tiendaropa/compra/metodopago
+
+Headers:
+{
+  "Authorization": "Bearer <token>"
+}
+````  
+Respuesta:
+````json
+200 OK
+
+{
+  "metodo": "Tarjeta de crédito"
+}
+````
+
+### POST Pagar el pedido del carrito de la compra:
+
+* Breve descripción: Realiza el pago del pedido del carrito de la compra.
+* Ruta: POST /tiendaropa/compra/pagar
+* Método: POST
+* Funcionalidad: Realiza el pago del pedido del carrito de la compra.
+* Estructura de la petición:
+    * Body:
+````json
+{
+  "metodo": string,
+  "detalles": {
+    // Detalles específicos del método de pago
+  }
+}
+````
+* Estructura de la respuesta:  
+200: Pago realizado correctamente.
+````json
+{
+  "idPedido": int
+}
+````  
+400: Datos de pago incorrectos.
+````json
+{
+  "error": "Datos de pago incorrectos"
+}
+````
+* Parámetros:
+    * Headers:
+        * Authorization: string (Token de usuario)
+* Gestión de errores:
+    * 400: Si los datos de pago son incorrectos.
+    * 401: Si la autorización es incorrecta.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:  
+Petición:
+````json
+POST localhost:8080/tiendaropa/compra/pagar
+
+Headers:
+{
+  "Authorization": "Bearer <token>"
+}
+
+Body:
+{
+  "metodo": "Tarjeta de crédito",
+  "detalles": {
+    "numeroTarjeta": "1234567890123456",
+    "nombreTitular": "John Doe",
+    "fechaExpiracion": "12/24",
+    "codigoSeguridad": "123"
+  }
+}
+````  
+Respuesta:
+````json
+200 OK
+
+{
+  "idPedido": 789
+}
+````
+````json
+400 Bad Request
+
+{
+  "error": "Datos de pago incorrectos"
+}
+````
+
+### DELETE Eliminar producto del carrito de la compra:
+
+* Breve descripción: Elimina un producto específico del carrito de la compra.
+* Ruta: DELETE /tiendaropa/carrito/{idProducto}
+* Método: DELETE
+* Funcionalidad: Elimina un producto específico del carrito de la compra.
+* Estructura de la petición: No aplica (DELETE request).
+* Estructura de la respuesta:
+    * 204: Producto eliminado correctamente.
+    * 404: Producto no encontrado en el carrito.
+* Parámetros:
+    * Path Params:
+        * idProducto: int (ID del producto a eliminar)
+    * Headers:
+        * Authorization: string (Token de usuario)
+* Gestión de errores:
+    * 401: Si la autorización es incorrecta.
+    * 404: Si el producto no se encuentra en el carrito.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:  
+Petición:
+````json
+DELETE localhost:8080/tiendaropa/carrito/456
+
+Headers:
+{
+  "Authorization": "Bearer <token>"
+}
+````  
+Respuesta:
+* 204 No Content (Eliminado correctamente)
+* 404 Not Found (Producto no encontrado en el carrito)
+
+### GET Obtener página About:
+
+* Breve descripción: Obtiene la página "About" de la tienda.
+* Ruta: GET /tiendaropa/about
+* Método: GET
+* Funcionalidad: Retorna la página "About" de la tienda.
+* Estructura de la petición: No aplica (GET request).
+* Estructura de la respuesta: HTML de la página "About".
+* Parámetros: No aplica.
+* Gestión de errores:
+    * 404: Si la página "About" no se encuentra.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:
+    * Petición: GET localhost:8080/tiendaropa/about
+    * Respuesta: HTML de la página "About".
+ 
+### GET Obtener página HOME:
+
+* Breve descripción: Obtiene la página de inicio (HOME) de la tienda.
+* Ruta: GET /tiendaropa/
+* Método: GET
+* Funcionalidad: Retorna la página de inicio (HOME) de la tienda.
+* Estructura de la petición: No aplica (GET request).
+* Estructura de la respuesta: HTML de la página de inicio (HOME).
+* Parámetros: No aplica.
+* Gestión de errores:
+    * 404: Si la página de inicio (HOME) no se encuentra.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:
+    * Petición: GET localhost:8080/tiendaropa/
+    * Respuesta: HTML de la página de inicio (HOME).
+
+### GET Obtener página con el listado de productos ofertados/destacados:
+
+* Breve descripción: Obtiene la página con el listado de productos ofertados o destacados.
+* Ruta: GET /tiendaropa/productos/ofertados
+* Método: GET
+* Funcionalidad: Retorna la página con el listado de productos ofertados o destacados.
+* Estructura de la petición: No aplica (GET request).
+* Estructura de la respuesta:
+    * 200: Listado de productos ofertados o destacados.
+````json
+{
+  "productos": [
+    {
+      "id": int,
+      "nombre": string,
+      "precio": float,
+      "ofertado": boolean,
+      "destacado": boolean
+    },
+    ...
+  ]
+}
+````
+* Parámetros: No aplica.
+* Gestión de errores:
+    * 404: Si no hay productos ofertados o destacados.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:
+    * Petición: GET localhost:8080/tiendaropa/productos/ofertados
+    * Respuesta:
+````json
+200 OK
+
+{
+  "productos": [
+    {
+      "id": 456,
+      "nombre": "Camiseta Deportiva",
+      "precio": 34.99,
+      "ofertado": true,
+      "destacado": false
+    },
+    {
+      "id": 789,
+      "nombre": "Zapatillas Running",
+      "precio": 79.99,
+      "ofertado": false,
+      "destacado": true
+    }
+  ]
+}
+````
+
+### PUT Administrador modifica los estados ofertado/destacado de los productos:
+
+* Breve descripción: Modifica el estado ofertado o destacado de los productos en la base de datos.
+* Ruta: PUT /tiendaropa/productos/ofertados
+* Método: PUT
+* Funcionalidad: Modifica el estado ofertado o destacado de los productos en la base de datos.
+* Estructura de la petición:
+    * Body:
+````json
+{
+  "productos": [
+    {
+      "id": int,
+      "ofertado": boolean,
+      "destacado": boolean
+    },
+    ...
+  ]
+}
+````
+* Estructura de la respuesta:  
+200: Modificado correctamente.
+````json
+{
+  "productosModificados": [
+    {
+      "id": int
+    },
+    ...
+  ]
+}
+````  
+400: Formato de datos incorrecto.
+````json
+{
+  "error": "Formato de datos incorrecto"
+}
+````
+* Parámetros:
+    * Headers:
+        * Authorization: string (Token de administrador)
+* Gestión de errores:
+    * 400: Si el formato de datos es incorrecto.
+    * 401: Si la autorización es incorrecta.
+    * 500: Error interno del servidor.
+* Ejemplo de uso:  
+Petición:
+````json
+PUT localhost:8080/tiendaropa/productos/ofertados
+
+Headers:
+{
+  "Authorization": "Bearer <token>"
+}
+
+Body:
+{
+  "productos": [
+    {
+      "id": 456,
+      "ofertado": true,
+      "destacado": false
+    },
+    {
+      "id": 789,
+      "ofertado": false,
+      "destacado": true
+    }
+  ]
+}
+````  
+Respuesta:
+````json
+200 OK
+
+{
+  "productosModificados": [
+    {
+      "id": 456
+    },
+    {
+      "id": 789
+    }
+  ]
+}
+````
+````json
+400 Bad Request
+
+{
+  "error": "Formato de datos incorrecto"
+}
+````
