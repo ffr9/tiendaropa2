@@ -5,12 +5,12 @@ Esta API sirve como método para enviar productos concretos a las diferentes Tie
 La URL base de la API es: /tiendaropa/
 
 Para la autenticación se deben seguir los siguientes pasos:
-    * Generación de Token: cuando un usuario se autentica en la aplicación, se genera un token de acceso único y se asocia al usuario.
-    * Envío del Token: cuando otra aplicación (tienda de ropa o gimnasio) necesita acceder a los servicios, deben enviar el token de acceso con cada solicitud.
-    * Validación del Token: se debe validar el token en cada solicitud recibida. Comprobar si el token ha expirado. Asegurar de que el usuario tenga los permisos necesarios para la acción solicitada.
+* Generación de Token: cuando un usuario se autentica en la aplicación, se genera un token de acceso único y se asocia al usuario.
+* Envío del Token: cuando otra aplicación (tienda de ropa o gimnasio) necesita acceder a los servicios, deben enviar el token de acceso con cada solicitud.
+* Validación del Token: se debe validar el token en cada solicitud recibida. Comprobar si el token ha expirado. Asegurar de que el usuario tenga los permisos necesarios para la acción solicitada.
 
 Las operaciones disponibles para las otras aplicaciones son:
-    * ...
+* ...
 
 ## GET Obtener página de registro:
 
