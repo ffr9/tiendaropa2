@@ -299,7 +299,7 @@ Respuesta:
   ]
 }
 ````
-
+````
 {
   "error": "Formato de datos incorrecto"
 }
