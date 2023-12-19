@@ -95,7 +95,6 @@ public class LoginController {
 
     @GetMapping("/about")
     public String about(Model model) {
-
         return "about";
     }
 }
