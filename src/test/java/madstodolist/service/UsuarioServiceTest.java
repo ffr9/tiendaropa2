@@ -63,6 +63,7 @@ public class UsuarioServiceTest {
 
         UsuarioData usuario = new UsuarioData();
         usuario.setEmail("usuario.prueba2@gmail.com");
+        usuario.setNombre("usuario");
         usuario.setPassword("12345678");
 
         usuarioService.registrar(usuario);
@@ -119,6 +120,7 @@ public class UsuarioServiceTest {
 
         UsuarioData usuario = new UsuarioData();
         usuario.setEmail("usuario.prueba@gmail.com");
+        usuario.setNombre("usuario");
         usuario.setPassword("12345678");
 
         UsuarioData usuarioNuevo = usuarioService.registrar(usuario);

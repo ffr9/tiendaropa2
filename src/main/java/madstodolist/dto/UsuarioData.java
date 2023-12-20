@@ -1,5 +1,7 @@
 package madstodolist.dto;
 
+import madstodolist.model.Usuario;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -16,6 +18,7 @@ public class UsuarioData {
     private String pais;
     private String poblacion;
     private String direccion;
+    private boolean admin;
 
     // Getters y setters
 
@@ -93,6 +96,14 @@ public class UsuarioData {
 
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
     // Sobreescribimos equals y hashCode para que dos usuarios sean iguales

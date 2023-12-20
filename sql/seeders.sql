@@ -1,8 +1,8 @@
 -- Seeder para la tabla Usuario
-INSERT INTO Usuario (Email, Nombre, Apellidos, Password, Telefono, Codigopostal, Pais, Poblacion, Direccion)
+INSERT INTO Usuario (Email, Nombre, Apellidos, Password, Telefono, Codigopostal, Pais, Poblacion, Direccion, Admin)
 VALUES
-    ('usuario1@example.com', 'Usuario1', 'Apellidos1', 'contraseña1', '123456789', 12345, 'País1', 'Población1', 'Dirección1'),
-    ('usuario2@example.com', 'Usuario2', 'Apellidos2', 'contraseña2', '987654321', 54321, 'País2', 'Población2', 'Dirección2');
+    ('usuario1@example.com', 'Usuario1', 'Apellidos1', 'contraseña1', '123456789', 12345, 'País1', 'Población1', 'Dirección1', false),
+    ('usuario2@example.com', 'Usuario2', 'Apellidos2', 'contraseña2', '987654321', 54321, 'País2', 'Población2', 'Dirección2', false);
 
 -- Seeder para la tabla Categoria
 INSERT INTO Categoria (Nombre, Descripcion, SubcategoriaId)

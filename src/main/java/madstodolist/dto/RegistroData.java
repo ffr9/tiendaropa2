@@ -32,6 +32,8 @@ public class RegistroData {
 
     private String direccion;
 
+    private boolean admin;
+
     public String getEmail() {
         return eMail;
     }
@@ -102,6 +104,14 @@ public class RegistroData {
 
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
 }

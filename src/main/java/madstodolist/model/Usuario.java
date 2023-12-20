@@ -16,14 +16,17 @@ public class Usuario implements Serializable {
     private Long id;
     @NotNull
     private String email;
+    @NotNull
     private String nombre;
     private String apellidos;
+    @NotNull
     private String password;
     private String telefono;
     private Integer codigopostal;
     private String pais;
     private String poblacion;
     private String direccion;
+    private boolean admin = false;
 
     // Constructor vacío necesario para JPA/Hibernate.
     // No debe usarse desde la aplicación.
@@ -116,21 +119,34 @@ public class Usuario implements Serializable {
         this.direccion = direccion;
     }
 
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
-        if (id != null && usuario.id != null)
-            // Si tenemos los ID, comparamos por ID
+
+        // Si tenemos los ID, comparamos por ID
+        if (id != null && usuario.id != null) {
             return Objects.equals(id, usuario.id);
-        // si no comparamos por campos obligatorios
-        return email.equals(usuario.email);
+        }
+
+        // Si no tenemos ID, comparamos por campos obligatorios
+        return email.equals(usuario.email) &&
+                nombre.equals(usuario.nombre) &&
+                password.equals(usuario.password);
     }
 
     @Override
     public int hashCode() {
         // Generamos un hash basado en los campos obligatorios
-        return Objects.hash(email);
+        return Objects.hash(email, nombre, password);
     }
 }

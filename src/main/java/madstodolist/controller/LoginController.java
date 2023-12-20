@@ -4,6 +4,7 @@ import madstodolist.authentication.ManagerUserSession;
 import madstodolist.dto.LoginData;
 import madstodolist.dto.RegistroData;
 import madstodolist.dto.UsuarioData;
+import madstodolist.model.Usuario;
 import madstodolist.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class LoginController {
@@ -61,6 +63,21 @@ public class LoginController {
     @GetMapping("/registro")
     public String registroForm(Model model) {
         model.addAttribute("registroData", new RegistroData());
+
+        boolean admin = false;
+
+        List<Usuario> listaUsuarios = usuarioService.listadoCompleto();
+
+        // Buscamos en el listado completo de usuarios si hay alguno de ellos que sea admin
+        for (Usuario listaUsuario : listaUsuarios) {
+            if (listaUsuario.isAdmin()) {
+                admin = true;
+                break;
+            }
+        }
+
+        model.addAttribute("admin", admin);
+
         return "formRegistro";
     }
 
@@ -88,6 +105,7 @@ public class LoginController {
        usuario.setPais(registroData.getPais());
        usuario.setPoblacion(registroData.getPoblacion());
        usuario.setDireccion(registroData.getDireccion());
+       usuario.setAdmin(registroData.isAdmin());
 
         usuarioService.registrar(usuario);
         return "redirect:/login";

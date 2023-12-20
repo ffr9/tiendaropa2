@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS Usuario (
     Codigopostal INTEGER,
     Pais VARCHAR(255),
     Poblacion VARCHAR(255),
-    Direccion VARCHAR(255)
+    Direccion VARCHAR(255),
+    Admin BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS Categoria (

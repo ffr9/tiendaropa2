@@ -1,35 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments :: head (titulo='Login')"></head>
+<head th:replace="fragments :: head (titulo='Login')">
+    <!-- Enlace a Bootstrap Stylesheet -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyL7Q4q6txlSZq9ubRSfau8UcK7J6h"
+          crossorigin="anonymous"/>
+</head>
 
-<body>
-<div class="container-fluid">
+<body style="background-color: #f0f0f0; font-family: 'Quicksand', sans-serif;">
+
+<div class="container-fluid" style="margin-top: 50px;">
 
     <div class="row justify-content-center mb-3">
         <div class="col-auto">
-            <h2>Login</h2>
+            <h2 style="color: #171a1d; text-align: center; margin-bottom: 30px;">Login</h2>
         </div>
     </div>
 
     <div class="row justify-content-center">
         <div class="col-6">
-            <form method="post" th:action="@{/login}" th:object="${loginData}">
+            <form method="post" th:action="@{/login}" th:object="${loginData}" class="needs-validation" novalidate>
                 <div class="row justify-content-center">
                     <div class="col-6">
                         <div class="form-group">
-                            <label for="eMail">Usuario</label>
+                            <label for="eMail" style="color: #333; font-family: 'Quicksand', sans-serif;">Usuario</label>
                             <input id="eMail" class="form-control" name="eMail" placeholder="Correo electrónico" type="text" th:field="*{eMail}" required/>
                         </div>
                         <div class="form-group">
-                            <label for="password">Contraseña</label>
+                            <label for="password" style="color: #333; font-family: 'Quicksand', sans-serif;">Contraseña</label>
                             <input id="password" class="form-control" name="password"  placeholder="Contraseña" type="password" th:field="*{password}" required/>
                         </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
-                        <a class="btn btn-link" href="/registro">Ir a registro</a>
+                        <button type="submit" class="btn btn-primary btn-block" style="background-color: #171a1d; border-color: #171a1d; color: #fff;">Login</button>
+                        <a class="btn btn-link" href="/registro" style="color: #171a1d;">Ir a registro</a>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
+
     <div class="row mt-3 justify-content-center">
         <div class="col-6">
             <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>

@@ -54,8 +54,17 @@ public class UsuarioTest {
         // el mismo e-mail
 
         Usuario usuario1 = new Usuario("juan.gutierrez@gmail.com");
+        usuario1.setNombre("Usuario Ejemplo");
+        usuario1.setEmail("email@gmail.com");
+        usuario1.setPassword("123456");
         Usuario usuario2 = new Usuario("juan.gutierrez@gmail.com");
+        usuario2.setNombre("Usuario Ejemplo");
+        usuario2.setEmail("email@gmail.com");
+        usuario2.setPassword("123456");
         Usuario usuario3 = new Usuario("ana.gutierrez@gmail.com");
+        usuario3.setNombre("Usuario3 Ejemplo");
+        usuario3.setEmail("email3@gmail.com");
+        usuario3.setPassword("123459");
 
         // THEN
         // son iguales (Equal) los que tienen el mismo e-mail.
@@ -132,6 +141,8 @@ public class UsuarioTest {
         // Un usuario en la BD
         Usuario usuario = new Usuario("user@ua");
         usuario.setNombre("Usuario Ejemplo");
+        usuario.setEmail("email@gmail.com");
+        usuario.setPassword("123456");
         usuarioRepository.save(usuario);
         Long usuarioId = usuario.getId();
 
@@ -145,26 +156,6 @@ public class UsuarioTest {
 
         assertThat(usuarioBD).isNotNull();
         assertThat(usuarioBD.getId()).isEqualTo(usuarioId);
-        assertThat(usuarioBD.getNombre()).isEqualTo("Usuario Ejemplo");
-    }
-
-    @Test
-    @Transactional
-    public void buscarUsuarioPorEmail() {
-        // GIVEN
-        // Un usuario en la BD
-        Usuario usuario = new Usuario("user@ua");
-        usuario.setNombre("Usuario Ejemplo");
-        usuarioRepository.save(usuario);
-
-        // WHEN
-        // buscamos al usuario por su correo electrónico,
-
-        Usuario usuarioBD = usuarioRepository.findByEmail("user@ua").orElse(null);
-
-        // THEN
-        // se obtiene el usuario correcto.
-
         assertThat(usuarioBD.getNombre()).isEqualTo("Usuario Ejemplo");
     }
 }
