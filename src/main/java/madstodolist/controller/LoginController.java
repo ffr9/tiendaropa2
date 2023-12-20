@@ -27,11 +27,6 @@ public class LoginController {
     @Autowired
     ManagerUserSession managerUserSession;
 
-    @GetMapping("/")
-    public String home(Model model) {
-        return "redirect:/login";
-    }
-
     @GetMapping("/login")
     public String loginForm(Model model) {
         model.addAttribute("loginData", new LoginData());
@@ -118,7 +113,18 @@ public class LoginController {
    }
 
     @GetMapping("/about")
-    public String about(Model model) {
+    public String about(Model model, HttpSession session) {
+        // Obtenemos el id del usuario en sesión para comprobar si está logueado o no
+        Long id = managerUserSession.usuarioLogeado();
+
+        if(id != null){
+            // Si está logueado, lo buscamos en la base de datos y lo añadimos al atributo "usuario"
+            UsuarioData user = usuarioService.findById(id);
+            // "usuario" lo usaremos en la vista html
+            model.addAttribute("usuario", user);
+        }
+
+        // si no está logueado, se mostrará el navbar de no estar logueado
         return "about";
     }
 }
