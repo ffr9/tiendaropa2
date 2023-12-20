@@ -37,7 +37,6 @@ public class UsuarioTest {
         usuario.setPassword("12345678");
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        usuario.setFechaNacimiento(sdf.parse("1997-02-20"));
 
         // THEN
         // los valores actualizados quedan guardados en el usuario y se
@@ -46,7 +45,6 @@ public class UsuarioTest {
         assertThat(usuario.getEmail()).isEqualTo("juan.gutierrez@gmail.com");
         assertThat(usuario.getNombre()).isEqualTo("Juan Gutiérrez");
         assertThat(usuario.getPassword()).isEqualTo("12345678");
-        assertThat(usuario.getFechaNacimiento()).isEqualTo(sdf.parse("1997-02-20"));
     }
 
     @Test
@@ -107,7 +105,6 @@ public class UsuarioTest {
         usuario.setPassword("12345678");
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        usuario.setFechaNacimiento(sdf.parse("1997-02-20"));
 
         // WHEN
         // se guarda en la base de datos
@@ -126,7 +123,6 @@ public class UsuarioTest {
         assertThat(usuarioBD.getEmail()).isEqualTo("juan.gutierrez@gmail.com");
         assertThat(usuarioBD.getNombre()).isEqualTo("Juan Gutiérrez");
         assertThat(usuarioBD.getPassword()).isEqualTo("12345678");
-        assertThat(usuarioBD.getFechaNacimiento()).isEqualTo(sdf.parse("1997-02-20"));
     }
 
     @Test

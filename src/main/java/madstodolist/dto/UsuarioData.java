@@ -9,8 +9,13 @@ public class UsuarioData {
     private Long id;
     private String email;
     private String nombre;
+    private String apellidos;
     private String password;
-    private Date fechaNacimiento;
+    private String telefono;
+    private Integer codigopostal;
+    private String pais;
+    private String poblacion;
+    private String direccion;
 
     // Getters y setters
 
@@ -42,12 +47,52 @@ public class UsuarioData {
 
     public String getPassword() { return password; }
 
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public Integer getCodigopostal() {
+        return codigopostal;
+    }
+
+    public void setCodigopostal(Integer codigopostal) {
+        this.codigopostal = codigopostal;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
+    public String getPoblacion() {
+        return poblacion;
+    }
+
+    public void setPoblacion(String poblacion) {
+        this.poblacion = poblacion;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
     // Sobreescribimos equals y hashCode para que dos usuarios sean iguales

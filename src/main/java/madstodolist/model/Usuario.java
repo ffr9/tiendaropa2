@@ -3,11 +3,10 @@ package madstodolist.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "usuario")
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -18,10 +17,13 @@ public class Usuario implements Serializable {
     @NotNull
     private String email;
     private String nombre;
+    private String apellidos;
     private String password;
-    @Column(name = "fecha_nacimiento")
-    @Temporal(TemporalType.DATE)
-    private Date fechaNacimiento;
+    private String telefono;
+    private Integer codigopostal;
+    private String pais;
+    private String poblacion;
+    private String direccion;
 
     // Constructor vacío necesario para JPA/Hibernate.
     // No debe usarse desde la aplicación.
@@ -50,6 +52,14 @@ public class Usuario implements Serializable {
         this.email = email;
     }
 
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -66,15 +76,45 @@ public class Usuario implements Serializable {
         this.password = password;
     }
 
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
-    // Getters y setters de la relación
+    public Integer getCodigopostal() {
+        return codigopostal;
+    }
+
+    public void setCodigopostal(Integer codigopostal) {
+        this.codigopostal = codigopostal;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
+    public String getPoblacion() {
+        return poblacion;
+    }
+
+    public void setPoblacion(String poblacion) {
+        this.poblacion = poblacion;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 
     @Override
     public boolean equals(Object o) {

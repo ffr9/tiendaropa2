@@ -73,15 +73,21 @@ public class LoginController {
 
         if (usuarioService.findByEmail(registroData.getEmail()) != null) {
             model.addAttribute("registroData", registroData);
-            model.addAttribute("error", "El usuario " + registroData.getEmail() + " ya existe");
+            model.addAttribute("error", "El usuario " + registroData.getEmail() + " ya existe.");
             return "formRegistro";
         }
 
         UsuarioData usuario = new UsuarioData();
         usuario.setEmail(registroData.getEmail());
         usuario.setPassword(registroData.getPassword());
-        usuario.setFechaNacimiento(registroData.getFechaNacimiento());
         usuario.setNombre(registroData.getNombre());
+
+       usuario.setApellidos(registroData.getApellidos());
+       usuario.setTelefono(registroData.getTelefono());
+       usuario.setCodigopostal(registroData.getCodigopostal());
+       usuario.setPais(registroData.getPais());
+       usuario.setPoblacion(registroData.getPoblacion());
+       usuario.setDireccion(registroData.getDireccion());
 
         usuarioService.registrar(usuario);
         return "redirect:/login";

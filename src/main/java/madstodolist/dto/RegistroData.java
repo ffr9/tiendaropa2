@@ -2,17 +2,35 @@ package madstodolist.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.Email;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 // Clase de datos para el formulario de registro
 public class RegistroData {
-    @Email
+    @NotNull(message = "El email no puede ser nulo.")
+    @Email(message = "Por favor, introduce una dirección de correo electrónico válida.")
     private String eMail;
+
+    @NotNull(message = "La contraseña no puede ser nula.")
+    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres.")
     private String password;
+
+    @NotNull(message = "El nombre no puede ser nulo.")
     private String nombre;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private Date fechaNacimiento;
+
+    private String apellidos;
+
+    @Pattern(regexp = "\\d{1,20}", message = "El teléfono debe contener solo números y tener máximo 20 dígitos.")
+    private String telefono;
+
+    @Min(value = 0, message = "El código postal debe ser mayor o igual a 0.")
+    private Integer codigopostal;
+
+    private String pais;
+
+    private String poblacion;
+
+    private String direccion;
 
     public String getEmail() {
         return eMail;
@@ -38,11 +56,52 @@ public class RegistroData {
         this.nombre = nombre;
     }
 
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
+
+    public Integer getCodigopostal() {
+        return codigopostal;
+    }
+
+    public void setCodigopostal(Integer codigopostal) {
+        this.codigopostal = codigopostal;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
+    public String getPoblacion() {
+        return poblacion;
+    }
+
+    public void setPoblacion(String poblacion) {
+        this.poblacion = poblacion;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
 }
