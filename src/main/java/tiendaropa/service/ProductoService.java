@@ -31,9 +31,9 @@ public class ProductoService {
     private ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
-    public List<ProductoData> allProductosUsuario(Long idUsuario) {
+    public List<ProductoData> allProductos() {
         logger.debug("Devolviendo todos los productos");
-        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
+        //Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
 
         List<Producto> productos = productoRepository.findAll();
         List<ProductoData> productosDTO = productos.stream().map(producto -> modelMapper.map(producto, ProductoData.class)).collect(Collectors.toList());

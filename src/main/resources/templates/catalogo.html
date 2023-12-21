@@ -18,9 +18,34 @@
 
 <h2>Catálogo de productos</h2>
 
+<div class="catalogo">
+    <!-- Iterar sobre la lista de productos y mostrarlos uno debajo del otro -->
+    <div th:each="producto : ${productos}" class="tarjeta-producto">
+        <!-- Div que muestra todos los detalles del producto -->
+        <div class="detalles">
+            <h3 th:text="${producto.nombre}"></h3>
+            <p th:text="${producto.precio}"></p>
+            <p th:text="${producto.stock}"></p>
+            <p th:text="${producto.numref}"></p>
+
+        </div>
+    </div>
 </div>
 
 <div th:replace="fragments::javascript"/>
-
+<style>
+    h2 {
+        text-align: center;
+        margin-top: 50px;
+        font-size: 45px;
+    }
+    .tarjeta-producto {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px auto; /* Centrar horizontalmente */
+        width: 550px; /* Ancho aumentado de las tarjetas */
+    }
+</style>
 </body>
 </html>

@@ -2,11 +2,16 @@ package tiendaropa.controller;
 
 import tiendaropa.authentication.ManagerUserSession;
 import tiendaropa.dto.UsuarioData;
+import tiendaropa.model.Producto;
+import tiendaropa.model.ProductoData;
+import tiendaropa.service.ProductoService;
 import tiendaropa.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Controller
 public class ProductoController {
@@ -16,6 +21,9 @@ public class ProductoController {
 
     @Autowired
     UsuarioService usuarioService;
+
+    @Autowired
+    ProductoService productoService;
 
     private boolean comprobarUsuarioLogeado() {
         Long idUsuarioLogeado = managerUserSession.usuarioLogeado();
@@ -34,6 +42,8 @@ public class ProductoController {
         }else{
             model.addAttribute("usuario", null);
         }
+        List<ProductoData> productos = productoService.allProductos();
+        model.addAttribute("productos", productos);
 
         return "catalogo";
     }
