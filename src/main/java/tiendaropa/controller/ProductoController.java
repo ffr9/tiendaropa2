@@ -8,7 +8,7 @@ import tiendaropa.controller.exception.UsuarioNoLogeadoException;
 import tiendaropa.dto.BusquedaData;
 import tiendaropa.dto.UsuarioData;
 import tiendaropa.model.Producto;
-import tiendaropa.model.ProductoData;
+import tiendaropa.dto.ProductoData;
 import tiendaropa.service.ProductoService;
 import tiendaropa.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
