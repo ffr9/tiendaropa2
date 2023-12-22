@@ -11,8 +11,9 @@
 <body style="font-family: 'Quicksand', sans-serif;">
 
 <div th:if="${logueado != null}">
-    <div th:replace="fragments :: navbar(userName=${logueado} ? ${logueado.getNombre()} : '',
-                     userId=${logueado} ? ${logueado.getId()} : '')"></div>
+        <div th:replace="fragments :: navbar(userName=${logueado} ? ${logueado.getNombre()} : '',
+                     userId=${logueado} ? ${logueado.getId()} : '',
+                     admin=${logueado} ? ${logueado.isAdmin()} : '')"></div>
 
     <div class="container mt-4">
         <div class="row">
