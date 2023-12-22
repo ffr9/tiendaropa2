@@ -1,6 +1,7 @@
 package tiendaropa.service;
 
 import tiendaropa.dto.UsuarioData;
+import tiendaropa.model.Pedido;
 import tiendaropa.model.Usuario;
 import tiendaropa.repository.UsuarioRepository;
 import org.modelmapper.ModelMapper;
@@ -135,5 +136,16 @@ public class UsuarioService {
         usuarioActualizado = usuarioRepository.save(usuarioActualizado);
 
         return modelMapper.map(usuarioActualizado, UsuarioData.class);
+    }
+
+    @Transactional
+    public void eliminarUsuario(Long usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
+
+        if (usuario == null) {
+            throw new UsuarioServiceException("El usuario con ID " + usuarioId + " no existe en la base de datos.");
+        }
+
+        usuarioRepository.delete(usuario);
     }
 }
