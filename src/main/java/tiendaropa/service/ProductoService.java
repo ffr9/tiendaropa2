@@ -41,4 +41,15 @@ public class ProductoService {
         return productosDTO;
     }
 
+    @Transactional(readOnly = true)
+    public List<ProductoData> buscarProductos(String busqueda) {
+        logger.debug("Devolviendo todos los productos con busqueda");
+
+        List<ProductoData> productos = allProductos();
+        List<ProductoData> filtrados;
+        filtrados = productos.stream().filter(producto -> producto.getNombre().contains(busqueda)).collect(Collectors.toList());
+
+        return filtrados;
+    }
+
 }

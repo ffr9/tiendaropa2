@@ -1,6 +1,8 @@
 package tiendaropa.controller;
 
+import org.springframework.web.bind.annotation.ModelAttribute;
 import tiendaropa.authentication.ManagerUserSession;
+import tiendaropa.dto.BusquedaData;
 import tiendaropa.dto.UsuarioData;
 import tiendaropa.model.Producto;
 import tiendaropa.model.ProductoData;
@@ -43,6 +45,21 @@ public class ProductoController {
             model.addAttribute("usuario", null);
         }
         List<ProductoData> productos = productoService.allProductos();
+        model.addAttribute("productos", productos);
+
+        return "catalogo";
+    }
+
+    @GetMapping("/tiendaropa/catalogo/busqueda")
+    public String buscarProducto(@ModelAttribute BusquedaData busquedaData, Model model){
+        if(comprobarUsuarioLogeado()) {
+            UsuarioData usuario = usuarioService.findById(managerUserSession.usuarioLogeado());
+            model.addAttribute("usuario", usuario);
+        }else{
+            model.addAttribute("usuario", null);
+        }
+        List<ProductoData> productos = productoService.buscarProductos(busquedaData.getBusqueda());
+        model.addAttribute("busquedaData", new BusquedaData());
         model.addAttribute("productos", productos);
 
         return "catalogo";
