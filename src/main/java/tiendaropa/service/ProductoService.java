@@ -74,4 +74,31 @@ public class ProductoService {
 
     }
 
+    @Transactional
+    public ProductoData modificarProducto(Long idProducto, String nombre, float precio, Integer stock, String numref, boolean destacado, Integer categoriaid){
+        logger.debug("Modificando producto " + idProducto + " - " + nombre);
+        Producto producto = productoRepository.findById(idProducto).orElse(null);
+        if (producto == null) {
+            //throw new TareaServiceException("No existe tarea con id " + idTarea);
+        }
+
+        producto.setNombre(nombre);
+        producto.setPrecio(precio);
+        producto.setStock(stock);
+        producto.setNumref(numref);
+        producto.setDestacado(destacado);
+        producto.setCategoriaid(categoriaid);
+
+        producto = productoRepository.save(producto);
+        return modelMapper.map(producto, ProductoData.class);
+    }
+
+    @Transactional
+    public ProductoData crearProducto(String nombre, float precio, Integer stock, String numref, boolean destacado, Integer categoriaid){
+        logger.debug("Creando producto " + nombre);
+        Producto producto = new Producto(nombre, precio, stock, numref, destacado, categoriaid);
+        productoRepository.save(producto);
+        return modelMapper.map(producto, ProductoData.class);
+    }
+
 }

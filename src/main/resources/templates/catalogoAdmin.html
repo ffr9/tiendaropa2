@@ -30,8 +30,10 @@
             <button class="btn btn-danger btn-xs" onmouseover="" style="cursor: pointer;"
                     th:onclick="'del(\'/tiendaropa/productos/' + ${producto.id} + '\')'">borrar
             </button>
+            <a class="btn btn-primary btn-xs" th:href="@{/admin/tiendaropa/productos/{id}/editar(id=${producto.id})}"/>editar</a>
         </div>
     </div>
+    <a class="btn btn-primary" th:href="@{/admin/tiendaropa/productos/nuevo}"> Nuevo producto</a>
 </div>
 
 <div th:replace="fragments::javascript"/>
