@@ -1,7 +1,7 @@
 package tiendaropa.service;
 
 import tiendaropa.model.Producto;
-import tiendaropa.model.ProductoData;
+import tiendaropa.dto.ProductoData;
 import tiendaropa.model.Usuario;
 import tiendaropa.repository.ProductoRepository;
 import tiendaropa.repository.UsuarioRepository;

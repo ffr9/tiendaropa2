@@ -3,7 +3,9 @@ package tiendaropa.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuario")
@@ -28,13 +30,18 @@ public class Usuario implements Serializable {
     private String direccion;
     private boolean admin = false;
 
+    @OneToMany(mappedBy = "usuario")
+    Set<Pedido> pedidos = new HashSet<>();
+
     // Constructor vacío necesario para JPA/Hibernate.
     // No debe usarse desde la aplicación.
     public Usuario() {}
 
-    // Constructor público con los atributos obligatorios. En este caso el correo electrónico.
-    public Usuario(String email) {
+    // Constructor público con los atributos obligatorios.
+    public Usuario(String email, String password, String nombre) {
         this.email = email;
+        this.nombre = nombre;
+        this.password = password;
     }
 
     // Getters y setters atributos básicos
@@ -125,6 +132,21 @@ public class Usuario implements Serializable {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public Set<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void addPedido(Pedido pedido) {
+        // Si el pedido ya está en la lista, no lo añadimos
+        if (pedidos.contains(pedido)) return;
+        // Añadimos el pedido a la lista
+        pedidos.add(pedido);
+        // Establecemos la relación inversa del usuario en el pedido
+        if (pedido.getUsuario() != this) {
+            pedido.setUsuario(this);
+        }
     }
 
     @Override

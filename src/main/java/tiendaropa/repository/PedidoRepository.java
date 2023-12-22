@@ -1,2 +1,7 @@
-package tiendaropa.repository;public interface PedidoRepository {
+package tiendaropa.repository;
+
+import tiendaropa.model.Pedido;
+import org.springframework.data.repository.CrudRepository;
+
+public interface PedidoRepository extends CrudRepository<Pedido, Long> {
 }

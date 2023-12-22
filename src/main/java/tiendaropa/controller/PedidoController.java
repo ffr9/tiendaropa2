@@ -1,2 +1,4 @@
-package tiendaropa.controller;public class PedidoController {
+package tiendaropa.controller;
+
+public class PedidoController {
 }

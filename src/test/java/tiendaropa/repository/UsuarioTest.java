@@ -28,7 +28,7 @@ public class UsuarioTest {
 
         // GIVEN
         // Creado un nuevo usuario,
-        Usuario usuario = new Usuario("juan.gutierrez@gmail.com");
+        Usuario usuario = new Usuario("juan.gutierrez@gmail.com","123","pepe");
 
         // WHEN
         // actualizamos sus propiedades usando los setters,
@@ -53,15 +53,15 @@ public class UsuarioTest {
         // Creados tres usuarios sin identificador, y dos de ellas con
         // el mismo e-mail
 
-        Usuario usuario1 = new Usuario("juan.gutierrez@gmail.com");
+        Usuario usuario1 = new Usuario("juan.gutierrez@gmail.com","123","pepe");
         usuario1.setNombre("Usuario Ejemplo");
         usuario1.setEmail("email@gmail.com");
         usuario1.setPassword("123456");
-        Usuario usuario2 = new Usuario("juan.gutierrez@gmail.com");
+        Usuario usuario2 = new Usuario("juan.gutierrez@gmail.com","123","pepe");
         usuario2.setNombre("Usuario Ejemplo");
         usuario2.setEmail("email@gmail.com");
         usuario2.setPassword("123456");
-        Usuario usuario3 = new Usuario("ana.gutierrez@gmail.com");
+        Usuario usuario3 = new Usuario("ana.gutierrez@gmail.com","123","pepe");
         usuario3.setNombre("Usuario3 Ejemplo");
         usuario3.setEmail("email3@gmail.com");
         usuario3.setPassword("123459");
@@ -80,9 +80,9 @@ public class UsuarioTest {
         // Creadas tres usuarios con distintos e-mails y dos de ellos
         // con el mismo identificador,
 
-        Usuario usuario1 = new Usuario("juan.gutierrez@gmail.com");
-        Usuario usuario2 = new Usuario("pedro.gutierrez@gmail.com");
-        Usuario usuario3 = new Usuario("ana.gutierrez@gmail.com");
+        Usuario usuario1 = new Usuario("juan.gutierrez@gmail.com","123","pepe");
+        Usuario usuario2 = new Usuario("pedro.gutierrez@gmail.com","123","pepe");
+        Usuario usuario3 = new Usuario("ana.gutierrez@gmail.com","123","pepe");
 
         usuario1.setId(1L);
         usuario2.setId(2L);
@@ -109,7 +109,7 @@ public class UsuarioTest {
         // GIVEN
         // Un usuario nuevo creado sin identificador
 
-        Usuario usuario = new Usuario("juan.gutierrez@gmail.com");
+        Usuario usuario = new Usuario("juan.gutierrez@gmail.com","123","pepe");
         usuario.setNombre("Juan Gutiérrez");
         usuario.setPassword("12345678");
 
@@ -139,7 +139,7 @@ public class UsuarioTest {
     public void buscarUsuarioEnBaseDatos() {
         // GIVEN
         // Un usuario en la BD
-        Usuario usuario = new Usuario("user@ua");
+        Usuario usuario = new Usuario("juan.gutierrez@gmail.com","123","pepe");
         usuario.setNombre("Usuario Ejemplo");
         usuario.setEmail("email@gmail.com");
         usuario.setPassword("123456");
