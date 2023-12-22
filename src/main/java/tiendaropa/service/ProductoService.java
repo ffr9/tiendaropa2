@@ -52,4 +52,26 @@ public class ProductoService {
         return filtrados;
     }
 
+    @Transactional(readOnly = true)
+    public ProductoData findById(Long productoId) {
+        logger.debug("Buscando producto " + productoId);
+        Producto tarea = productoRepository.findById(productoId).orElse(null);
+        if (tarea == null) return null;
+        else return modelMapper.map(tarea, ProductoData.class);
+    }
+
+    @Transactional
+    public void borrarProducto(Long idProducto) {
+        logger.debug("Borrando producto " + idProducto);
+        Producto producto = productoRepository.findById(idProducto).orElse(null);
+        if (producto == null) {
+            //throw new TareaServiceException("No existe tarea con id " + idTarea);
+        }else{
+            productoRepository.delete(producto);
+        }
+        //descomentar esta linea cuando ponga excepcion en if, ademas quitar else
+        //productoRepository.delete(producto);
+
+    }
+
 }
