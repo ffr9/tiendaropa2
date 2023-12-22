@@ -2,7 +2,9 @@ package tiendaropa.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "producto")
@@ -19,6 +21,9 @@ public class Producto {
     private String numref;
     private boolean destacado = false;
     private Integer categoriaid;
+
+    @OneToMany(mappedBy = "producto")
+    Set<LineaPedido> lineaspedido = new HashSet<>();
 
     public Producto() {
     }
@@ -82,6 +87,18 @@ public class Producto {
 
     public void setCategoriaid(Integer categoriaid) {
         this.categoriaid = categoriaid;
+    }
+
+    public Set<LineaPedido> getLineaspedido() {
+        return lineaspedido;
+    }
+
+    public void addLineaspedido(LineaPedido lineaPedido) {
+        if (lineaspedido.contains(lineaPedido)) return;
+        lineaspedido.add(lineaPedido);
+        if (lineaPedido.getProducto() != this) {
+            lineaPedido.setProducto(this);
+        }
     }
 
     @Override

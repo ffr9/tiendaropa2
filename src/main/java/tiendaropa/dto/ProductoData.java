@@ -1,4 +1,4 @@
-package tiendaropa.model;
+package tiendaropa.dto;
 
 import java.util.Objects;
 

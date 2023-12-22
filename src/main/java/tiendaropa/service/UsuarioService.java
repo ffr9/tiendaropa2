@@ -79,4 +79,61 @@ public class UsuarioService {
     public List<Usuario> listadoCompleto(){
         return (List<Usuario>) usuarioRepository.findAll();
     }
+
+    // Método que busca un Usuario en una lista de Usuarios pasado por parámetro y un id concreto a buscar
+    @Transactional(readOnly = true)
+    public Usuario buscarUsuarioPorId(List<Usuario> usuarios, Long idBuscado) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getId().equals(idBuscado)) {
+                return usuario; // Devuelve el usuario si se encuentra
+            }
+        }
+        return null; // Devuelve null si no se encuentra el usuario
+    }
+
+    // Método que actualiza los atributos de un usuario concreto por su ID
+    @Transactional
+    public UsuarioData actualizarUsuarioPorId(Long usuarioId, UsuarioData nuevosDatos) {
+        Optional<Usuario> usuarioExistente = usuarioRepository.findById(usuarioId);
+
+        if (!usuarioExistente.isPresent()) {
+            throw new UsuarioServiceException("El usuario con ID " + usuarioId + " no existe en la base de datos");
+        }
+
+        Usuario usuarioActualizado = usuarioExistente.get();
+
+        // Actualiza los campos con los nuevos datos proporcionados
+        if (nuevosDatos.getNombre() != null) {
+            usuarioActualizado.setNombre(nuevosDatos.getNombre());
+        }
+        else{
+            throw new UsuarioServiceException("Se ha recibido un nombre NULL");
+        }
+
+        if (nuevosDatos.getPassword() != null) {
+            usuarioActualizado.setPassword(nuevosDatos.getPassword());
+        }
+        else{
+            throw new UsuarioServiceException("Se ha recibido un password NULL");
+        }
+
+        if (nuevosDatos.getEmail() != null) {
+            usuarioActualizado.setEmail(nuevosDatos.getEmail());
+        }
+        else{
+            throw new UsuarioServiceException("Se ha recibido un email NULL");
+        }
+
+        usuarioActualizado.setApellidos(nuevosDatos.getApellidos());
+        usuarioActualizado.setTelefono(nuevosDatos.getTelefono());
+        usuarioActualizado.setPais(nuevosDatos.getPais());
+        usuarioActualizado.setPoblacion(nuevosDatos.getPoblacion());
+        usuarioActualizado.setDireccion(nuevosDatos.getDireccion());
+        usuarioActualizado.setCodigopostal(nuevosDatos.getCodigopostal());
+
+
+        usuarioActualizado = usuarioRepository.save(usuarioActualizado);
+
+        return modelMapper.map(usuarioActualizado, UsuarioData.class);
+    }
 }
