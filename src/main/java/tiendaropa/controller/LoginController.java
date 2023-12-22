@@ -44,7 +44,13 @@ public class LoginController {
 
             managerUserSession.logearUsuario(usuario.getId());
 
-            return "redirect:/about";
+            // Si es admin se redirecciona al panel de administración
+            if (usuario.isAdmin()) {
+                return "redirect:/admin";
+            }
+            else{
+                return "redirect:/home";
+            }
         } else if (loginStatus == UsuarioService.LoginStatus.USER_NOT_FOUND) {
             model.addAttribute("error", "No existe usuario");
             return "formLogin";
