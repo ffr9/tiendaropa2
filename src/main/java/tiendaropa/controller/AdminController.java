@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import tiendaropa.authentication.ManagerUserSession;
 import tiendaropa.controller.exception.UsuarioNoAutorizadoException;
@@ -13,6 +14,7 @@ import tiendaropa.dto.RegistroData;
 import tiendaropa.dto.UsuarioData;
 import tiendaropa.model.Usuario;
 import tiendaropa.service.UsuarioService;
+import tiendaropa.service.UsuarioServiceException;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -72,7 +74,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/usuarios/crear")
-    public String administracionUsuarioscrear(Model model, HttpSession session) {
+    public String administracionUsuariosCrear(Model model, HttpSession session) {
         model.addAttribute("registroData", new RegistroData());
 
         Long id = managerUserSession.usuarioLogeado();
@@ -88,7 +90,7 @@ public class AdminController {
     }
 
     @PostMapping("/admin/usuarios/crear")
-    public String administracionUsuarioscrearSubmit(@Valid RegistroData registroData, BindingResult result, Model model) {
+    public String administracionUsuariosCrearSubmit(@Valid RegistroData registroData, BindingResult result, Model model, HttpSession session) {
         Long id = managerUserSession.usuarioLogeado();
 
         comprobarAdmin(id);
@@ -123,5 +125,107 @@ public class AdminController {
         model.addAttribute("usuarios", usuarios);
 
         return "redirect:/admin/usuarios";
+    }
+
+    @PostMapping("/admin/usuarios/eliminar/{usuarioId}")
+    public String administracionUsuariosEliminar(@PathVariable(value = "usuarioId") Long usuarioId, Model model, HttpSession session) {
+        Long id = managerUserSession.usuarioLogeado();
+
+        comprobarAdmin(id);
+
+        try {
+            usuarioService.eliminarUsuario(usuarioId);
+        } catch(UsuarioServiceException e) {
+            throw new UsuarioServiceException(e.getMessage());
+        }
+
+        UsuarioData user = usuarioService.findById(id);
+        model.addAttribute("usuario", user);
+
+        List<Usuario> usuarios = usuarioService.listadoCompleto();
+        model.addAttribute("usuarios", usuarios);
+
+        return "adminUsuarios";
+    }
+
+    @GetMapping("/admin/usuarios/editar/{usuarioId}")
+    public String administracionUsuariosEditar(@PathVariable(value = "usuarioId") Long usuarioId, Model model, HttpSession session) {
+        Long id = managerUserSession.usuarioLogeado();
+
+        comprobarAdmin(id);
+
+        UsuarioData user = usuarioService.findById(id);
+        model.addAttribute("logueado", user);
+
+        List<Usuario> usuarios = usuarioService.listadoCompleto();
+        Usuario usuario = usuarioService.buscarUsuarioPorId(usuarios, usuarioId);
+
+        model.addAttribute("usuario", usuario);
+
+        RegistroData nuevo = new RegistroData();
+        nuevo.setEmail(usuario.getEmail());
+        nuevo.setPassword(usuario.getPassword());
+        nuevo.setNombre(usuario.getNombre());
+        nuevo.setApellidos(usuario.getApellidos());
+        nuevo.setTelefono(usuario.getTelefono());
+        nuevo.setCodigopostal(usuario.getCodigopostal());
+        nuevo.setPais(usuario.getPais());
+        nuevo.setPoblacion(usuario.getPoblacion());
+        nuevo.setDireccion(usuario.getDireccion());
+
+        model.addAttribute("registroData", nuevo);
+
+        return "editarUsuario";
+    }
+
+    @PostMapping("/admin/usuarios/editar/{usuarioId}")
+    public String administracionUsuariosEditarSubmit(@PathVariable(value="usuarioId") Long usuarioId, @Valid RegistroData registroData, BindingResult result, Model model, HttpSession session) {
+        Long id = managerUserSession.usuarioLogeado();
+
+        comprobarAdmin(id);
+
+        if (result.hasErrors()) {
+            System.out.println("Ha ocurrido un error.");
+        }
+        else{
+            try {
+                UsuarioData nuevoUsuarioData = usuarioService.findById(usuarioId);
+
+                if (registroData.getEmail() != null && registroData.getPassword() != null && registroData.getNombre() != null) {
+                    nuevoUsuarioData.setEmail(registroData.getEmail());
+                    nuevoUsuarioData.setPassword(registroData.getPassword());
+                    nuevoUsuarioData.setNombre(registroData.getNombre());
+                    nuevoUsuarioData.setApellidos(registroData.getApellidos());
+                    nuevoUsuarioData.setTelefono(registroData.getTelefono());
+                    nuevoUsuarioData.setPais(registroData.getPais());
+                    nuevoUsuarioData.setPoblacion(registroData.getPoblacion());
+                    nuevoUsuarioData.setDireccion(registroData.getDireccion());
+                    nuevoUsuarioData.setCodigopostal(registroData.getCodigopostal());
+
+                    // Validar y actualizar los datos del usuario en el servicio
+                    usuarioService.actualizarUsuarioPorId(usuarioId, nuevoUsuarioData);
+
+                    // Redirigir al perfil del usuario
+                    return "redirect:/admin/usuarios";
+                } else {
+                    model.addAttribute("errorActualizar", "Ninguno de los campos puede estar vacio.");
+                }
+
+            } catch (UsuarioServiceException e) {
+                model.addAttribute("errorActualizar", e.getMessage());
+            }
+        }
+
+        model.addAttribute("registroData", registroData);
+
+        UsuarioData user = usuarioService.findById(id);
+        model.addAttribute("logueado", user);
+
+        List<Usuario> usuarios = usuarioService.listadoCompleto();
+        Usuario usuario = usuarioService.buscarUsuarioPorId(usuarios, usuarioId);
+
+        model.addAttribute("usuario", usuario);
+
+        return "editarUsuario";
     }
 }

@@ -59,10 +59,12 @@
                         <td th:text="${usuario.poblacion}"></td>
                         <td th:text="${usuario.direccion}"></td>
                         <td>
-                            <a class="btn btn-success btn-xs" th:href="@{/admin/usuarios/editar/{id}(id=${usuario.id})}"/>Editar</a>
+                            <a class="btn btn-success btn-xs" th:href="@{/admin/usuarios/editar/{usuarioId}(usuarioId=${usuario.id})}">Editar</a>
                         </td>
                         <td>
-                            <a class="btn btn-danger btn-xs" th:href="@{/admin/usuarios/eliminar/{id}(id=${usuario.id})}"/>Eliminar</a>
+                            <form th:action="@{'/admin/usuarios/eliminar/' + ${usuario.id}}" method="post">
+                                <button type="submit" class="btn btn-danger btn-xs">Eliminar</button>
+                            </form>
                         </td>
                     </tr>
                     </tbody>

@@ -33,6 +33,12 @@ public class Usuario implements Serializable {
     @OneToMany(mappedBy = "usuario")
     Set<Pedido> pedidos = new HashSet<>();
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    Set<Comentario> comentarios = new HashSet<>();
+
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private Carrito carrito;
+
     // Constructor vacío necesario para JPA/Hibernate.
     // No debe usarse desde la aplicación.
     public Usuario() {}
@@ -147,6 +153,26 @@ public class Usuario implements Serializable {
         if (pedido.getUsuario() != this) {
             pedido.setUsuario(this);
         }
+    }
+
+    public Set<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void addComentarios(Comentario comentario) {
+        if (comentarios.contains(comentario)) return;
+        comentarios.add(comentario);
+        if (comentario.getUsuario() != this) {
+            comentario.setUsuario(this);
+        }
+    }
+
+    public Carrito getCarrito() {
+        return carrito;
+    }
+
+    public void setCarrito(Carrito carrito) {
+        this.carrito = carrito;
     }
 
     @Override

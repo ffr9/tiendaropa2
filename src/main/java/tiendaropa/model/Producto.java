@@ -22,8 +22,15 @@ public class Producto {
     private boolean destacado = false;
     private Integer categoriaid;
 
-    @OneToMany(mappedBy = "producto")
+    // Al eliminar las lineasPedido de los pedidos de un usuario, se eliminarán las lineasPedido también de esta lista.
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
     Set<LineaPedido> lineaspedido = new HashSet<>();
+
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    Set<LineaCarrito> lineascarrito = new HashSet<>();
+
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    Set<Comentario> comentarios = new HashSet<>();
 
     public Producto() {
     }
@@ -98,6 +105,30 @@ public class Producto {
         lineaspedido.add(lineaPedido);
         if (lineaPedido.getProducto() != this) {
             lineaPedido.setProducto(this);
+        }
+    }
+
+    public Set<LineaCarrito> getLineascarrito() {
+        return lineascarrito;
+    }
+
+    public void addLineascarrito(LineaCarrito lineaCarrito) {
+        if (lineascarrito.contains(lineaCarrito)) return;
+        lineascarrito.add(lineaCarrito);
+        if (lineaCarrito.getProducto() != this) {
+            lineaCarrito.setProducto(this);
+        }
+    }
+
+    public Set<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void addComentarios(Comentario comentario) {
+        if (comentarios.contains(comentario)) return;
+        comentarios.add(comentario);
+        if (comentario.getProducto() != this) {
+            comentario.setProducto(this);
         }
     }
 

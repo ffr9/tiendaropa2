@@ -58,9 +58,6 @@ public class PerfilController {
         if(id != null){
             model.addAttribute("registroData", new RegistroData());
 
-            UsuarioData user = usuarioService.findById(id);
-            model.addAttribute("logueado", user);
-
             List<Usuario> usuarios = usuarioService.listadoCompleto();
             Usuario usuario = usuarioService.buscarUsuarioPorId(usuarios, idUsuario);
 
