@@ -1,5 +1,8 @@
 package tiendaropa.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -30,7 +33,8 @@ public class Usuario implements Serializable {
     private String direccion;
     private boolean admin = false;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
     Set<Pedido> pedidos = new HashSet<>();
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)

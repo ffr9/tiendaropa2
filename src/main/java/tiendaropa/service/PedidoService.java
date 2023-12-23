@@ -44,4 +44,14 @@ public class PedidoService {
         // Finalmente, eliminar el pedido
         pedidoRepository.delete(pedido);
     }
+
+    @Transactional(readOnly = true)
+    public Pedido buscarPedidoPorId(List<Pedido> pedidos, Long idBuscado) {
+        for (Pedido pedido : pedidos) {
+            if (pedido.getId().equals(idBuscado)) {
+                return pedido; // Devuelve el usuario si se encuentra
+            }
+        }
+        return null; // Devuelve null si no se encuentra el usuario
+    }
 }
