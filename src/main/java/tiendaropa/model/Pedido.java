@@ -1,5 +1,8 @@
 package tiendaropa.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -24,7 +27,8 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "usuarioid")
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
     Set<LineaPedido> lineaspedido = new HashSet<>();
 
     // Constructor vacío necesario para JPA/Hibernate.
