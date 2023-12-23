@@ -1,8 +1,8 @@
 package tiendaropa.service;
 
 import tiendaropa.dto.UsuarioData;
-import tiendaropa.model.Usuario;
-import tiendaropa.repository.UsuarioRepository;
+import tiendaropa.model.*;
+import tiendaropa.repository.*;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +22,16 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private PedidoRepository pedidoRepository;
+    @Autowired
+    private LineaPedidoRepository lineaPedidoRepository;
+    @Autowired
+    private CarritoRepository carritoRepository;
+    @Autowired
+    private LineaCarritoRepository lineaCarritoRepository;
+    @Autowired
+    private ComentarioRepository comentarioRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -135,5 +145,28 @@ public class UsuarioService {
         usuarioActualizado = usuarioRepository.save(usuarioActualizado);
 
         return modelMapper.map(usuarioActualizado, UsuarioData.class);
+    }
+
+    @Transactional
+    public void eliminarUsuario(Long usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
+
+        if (usuario == null) {
+            throw new UsuarioServiceException("El usuario con ID " + usuarioId + " no existe en la base de datos.");
+        }
+
+        // Eliminar pedidos y líneas de pedido asociadas al usuario
+        for (Pedido pedido : usuario.getPedidos()) {
+            // Eliminar líneas de pedido asociadas al pedido
+            lineaPedidoRepository.deleteAll(pedido.getLineaspedido()); // Eliminar líneas de pedido
+        }
+
+        Carrito carrito = usuario.getCarrito();
+        lineaCarritoRepository.deleteAll(carrito.getLineascarrito()); // Eliminar líneas de carrito
+
+        carritoRepository.delete(usuario.getCarrito()); // Eliminar carrito
+        pedidoRepository.deleteAll(usuario.getPedidos()); // Eliminar pedidos
+        comentarioRepository.deleteAll(usuario.getComentarios()); // Eliminar comentarios
+        usuarioRepository.delete(usuario); // Eliminar usuario
     }
 }
