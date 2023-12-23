@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import tiendaropa.authentication.ManagerUserSession;
 import tiendaropa.controller.exception.UsuarioNoAutorizadoException;
 import tiendaropa.controller.exception.UsuarioNoLogeadoException;
+import tiendaropa.dto.PedidoData;
 import tiendaropa.dto.RegistroData;
 import tiendaropa.dto.UsuarioData;
+import tiendaropa.model.Pedido;
 import tiendaropa.model.Usuario;
+import tiendaropa.service.PedidoService;
+import tiendaropa.service.PedidoServiceException;
 import tiendaropa.service.UsuarioService;
 import tiendaropa.service.UsuarioServiceException;
 
@@ -27,6 +31,9 @@ public class AdminController {
 
     @Autowired
     UsuarioService usuarioService;
+
+    @Autowired
+    PedidoService pedidoService;
 
     // Método que recupera al usuario que está logueado y comprueba si es admin o no
     // Si ni si quiera está logueado se lanza la excepción de no estar logueado
@@ -227,5 +234,43 @@ public class AdminController {
         model.addAttribute("usuario", usuario);
 
         return "editarUsuario";
+    }
+
+    @GetMapping("/admin/pedidos")
+    public String administracionPedidos(Model model, HttpSession session) {
+        Long id = managerUserSession.usuarioLogeado();
+
+        comprobarAdmin(id);
+
+        // Si está logueado, lo buscamos en la base de datos y lo añadimos al atributo "usuario"
+        UsuarioData user = usuarioService.findById(id);
+        // "usuario" lo usaremos en la vista html
+        model.addAttribute("usuario", user);
+
+        List<Pedido> pedidos = pedidoService.listadoCompleto();
+        model.addAttribute("pedidos", pedidos);
+
+        return "adminPedidos";
+    }
+
+    @PostMapping("/admin/pedidos/eliminar/{pedidoId}")
+    public String administracionPedidosEliminar(@PathVariable(value = "pedidoId") Long pedidoId, Model model, HttpSession session) {
+        Long id = managerUserSession.usuarioLogeado();
+
+        comprobarAdmin(id);
+
+        try {
+            pedidoService.eliminarPedido(pedidoId);
+        } catch(PedidoServiceException e) {
+            throw new PedidoServiceException(e.getMessage());
+        }
+
+        UsuarioData user = usuarioService.findById(id);
+        model.addAttribute("usuario", user);
+
+        List<Pedido> pedidos = pedidoService.listadoCompleto();
+        model.addAttribute("pedidos", pedidos);
+
+        return "adminPedidos";
     }
 }
