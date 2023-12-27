@@ -28,6 +28,8 @@
             <p th:text="${producto.precio}"></p>
             <p th:text="${producto.stock}"></p>
             <p th:text="${producto.numref}"></p>
+            <img th:src="@{/assets/{productoImg}(productoImg=${producto.img})}" th:alt="'Imagen de ' + ${producto.nombre}" class="imagenes-celdas"/>
+
 
         </div>
     </div>
@@ -35,6 +37,11 @@
 
 <div th:replace="fragments::javascript"/>
 <style>
+    .imagenes-celdas {
+        width: 100%; /* Ancho deseado */
+        height: 300px; /* Alto deseado */
+        object-fit: cover; /* Conserva la relación de aspecto y cubre el área asignada */
+    }
     h2 {
         text-align: center;
         margin-top: 50px;
