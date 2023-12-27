@@ -26,6 +26,7 @@
                 <!-- Contenido del carrusel para cada producto -->
                 <h4 th:text="${producto.nombre}"></h4>
                 <p th:text="'Precio: $' + ${producto.precio}"></p>
+                <img th:src="@{/assets/{productoImg}(productoImg=${producto.img})}" th:alt="'Imagen de ' + ${producto.nombre}" class="imagenes-carrusel"/>
                 <!-- Agrega más atributos o detalles del producto según tu modelo -->
             </div>
         </div>
@@ -46,9 +47,10 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-4" th:each="producto, iterStat : ${productosDestacados}">
-            <div class="card mb-4 shadow-sm">
+            <div class="card mb-4 shadow-sm tarjeta-producto">
                 <h4 th:text="${producto.nombre}" class="card-title text-center mt-3"></h4>
                 <p th:text="'Precio: $' + ${producto.precio}" class="text-center"></p>
+                <img th:src="@{/assets/{productoImg}(productoImg=${producto.img})}" th:alt="'Imagen de ' + ${producto.nombre}" class="imagenes-celdas"/>
                 <!-- Agrega más detalles del producto si es necesario -->
             </div>
         </div>
@@ -57,6 +59,24 @@
 
 <div th:replace="fragments::javascript"/>
 <style>
+
+    .imagenes-celdas {
+        width: 100%; /* Ancho deseado */
+        height: 300px; /* Alto deseado */
+        object-fit: cover; /* Conserva la relación de aspecto y cubre el área asignada */
+    }
+    .imagenes-carrusel {
+        width: 500px; /* Ancho deseado */
+        height: 300px; /* Alto deseado */
+        object-fit: cover; /* Conserva la relación de aspecto y cubre el área asignada */
+    }
+
+    .tarjeta-producto {
+        width: 100%; /* O el ancho deseado para las tarjetas */
+        height: auto; /* Altura automática según el contenido */
+        /* Otros estilos de las tarjetas de producto */
+    }
+
     .carousel-control-prev-icon,
     .carousel-control-next-icon {
         background-color: black; /* Cambia el color a tu preferencia */

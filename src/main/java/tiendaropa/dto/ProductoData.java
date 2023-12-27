@@ -12,6 +12,15 @@ public class ProductoData {
     private boolean destacado = false;
     private Integer categoriaid;
 
+    private String img;
+
+    public String getImg() {
+        return img;
+    }
+    public void setImg(String urlImagen) {
+        this.img = urlImagen;
+    }
+
     public ProductoData() {
     }
 

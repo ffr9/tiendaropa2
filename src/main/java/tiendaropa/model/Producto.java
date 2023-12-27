@@ -32,6 +32,15 @@ public class Producto {
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
     Set<Comentario> comentarios = new HashSet<>();
 
+    private String img;
+
+    public String getImg() {
+        return img;
+    }
+    public void setImg(String urlImagen) {
+        this.img = urlImagen;
+    }
+
     public Producto() {
     }
 

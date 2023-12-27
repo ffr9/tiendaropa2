@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS Producto (
     NumRef VARCHAR(255),
     Destacado BOOLEAN,
     CategoriaId INT,
+    Img VARCHAR(255),
     FOREIGN KEY (CategoriaId) REFERENCES Categoria(Id)
 );
 
