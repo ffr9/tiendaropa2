@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface ProductoRepository extends CrudRepository<Producto, Long> {
     public List<Producto> findAll();
+
+    List<Producto> findByDestacadoIsTrue();
 }

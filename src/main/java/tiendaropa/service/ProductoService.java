@@ -101,4 +101,9 @@ public class ProductoService {
         return modelMapper.map(producto, ProductoData.class);
     }
 
+    @Transactional
+    public List<Producto> obtenerProductosDestacados() {
+        return productoRepository.findByDestacadoIsTrue(); // Suponiendo que tienes un campo 'destacado' en tu entidad Producto
+    }
+
 }
