@@ -82,4 +82,55 @@ public class CategoriaService {
         return (List<Categoria>) categoriaRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
+    public Categoria buscarCategoriaPorId(List<Categoria> categorias, Long idBuscado) {
+        for (Categoria categoria : categorias) {
+            if (categoria.getId().equals(idBuscado)) {
+                return categoria; // Devuelve el usuario si se encuentra
+            }
+        }
+        return null; // Devuelve null si no se encuentra el usuario
+    }
+
+    @Transactional(readOnly = true)
+    public CategoriaData findById(Long categoriaId) {
+        Categoria categoria = categoriaRepository.findById(categoriaId).orElse(null);
+        if (categoria == null) return null;
+        else {
+            return modelMapper.map(categoria, CategoriaData.class);
+        }
+    }
+
+    @Transactional
+    public CategoriaData actualizarCategoriaPorId(Long categoriaId, CategoriaData nuevosDatos) {
+        Optional<Categoria> categoriaExistente = categoriaRepository.findById(categoriaId);
+
+        if (!categoriaExistente.isPresent()) {
+            throw new CategoriaServiceException("La categoria con ID " + categoriaId + " no existe en la base de datos");
+        }
+
+        Categoria categoriaActualizado = categoriaExistente.get();
+
+        // Actualiza los campos con los nuevos datos proporcionados
+        if (nuevosDatos.getNombre() != null) {
+            categoriaActualizado.setNombre(nuevosDatos.getNombre());
+        }
+        else{
+            throw new CategoriaServiceException("Se ha recibido un nombre NULL");
+        }
+
+        if (nuevosDatos.getDescripcion() != null) {
+            categoriaActualizado.setDescripcion(nuevosDatos.getDescripcion());
+        }
+        else{
+            throw new CategoriaServiceException("Se ha recibido una descripcion NULL");
+        }
+
+
+        categoriaActualizado.setSubcategoriaid(nuevosDatos.getSubcategoriaid());
+        categoriaActualizado = categoriaRepository.save(categoriaActualizado);
+
+        return modelMapper.map(categoriaActualizado, CategoriaData.class);
+    }
+
 }

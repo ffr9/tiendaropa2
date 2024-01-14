@@ -362,4 +362,77 @@ public class AdminController {
 
         return "adminCategorias";
     }
+
+    @GetMapping("/admin/categorias/editar/{categoriaId}")
+    public String administracionCategoriasEditar(@PathVariable(value = "categoriaId") Long categoriaId, Model model, HttpSession session) {
+        Long id = managerUserSession.usuarioLogeado();
+
+        comprobarAdmin(id);
+
+        UsuarioData user = usuarioService.findById(id);
+        model.addAttribute("usuario", user);
+
+        List<Categoria> categorias = categoriaService.listadoCompleto();
+        Categoria categoria = categoriaService.buscarCategoriaPorId(categorias, categoriaId);
+
+        model.addAttribute("categoria", categoria);
+
+        CategoriaData nuevo = new CategoriaData();
+        nuevo.setNombre(categoria.getNombre());
+        nuevo.setDescripcion(categoria.getDescripcion());
+        nuevo.setSubcategoriaid(categoria.getSubcategoriaid());
+
+
+        model.addAttribute("categoriaData", nuevo);
+
+        return "editarCategoria";
+    }
+
+    @PostMapping("/admin/categorias/editar/{categoriaId}")
+    public String administracionCategoriasEditarSubmit(@PathVariable(value="categoriaId") Long categoriaId,
+                                                     @Valid CategoriaData categoriaData, BindingResult result,
+                                                     Model model, HttpSession session) {
+        Long id = managerUserSession.usuarioLogeado();
+
+        comprobarAdmin(id);
+
+        if (result.hasErrors()) {
+            System.out.println("Ha ocurrido un error.");
+        }
+        else{
+            try {
+                CategoriaData nuevoCategoriaData = categoriaService.findById(categoriaId);
+
+                if (categoriaData.getNombre() != null  && categoriaData.getDescripcion() != null) {
+                    nuevoCategoriaData.setNombre(categoriaData.getNombre());
+                    nuevoCategoriaData.setDescripcion(categoriaData.getDescripcion());
+                    nuevoCategoriaData.setSubcategoriaid(categoriaData.getSubcategoriaid());
+
+
+                    // Validar y actualizar los datos del usuario en el servicio
+                    categoriaService.actualizarCategoriaPorId(categoriaId, nuevoCategoriaData);
+
+                    // Redirigir al perfil del usuario
+                    return "redirect:/admin/categorias";
+                } else {
+                    model.addAttribute("errorActualizar", "Ninguno de los campos puede estar vacio.");
+                }
+
+            } catch (UsuarioServiceException e) {
+                model.addAttribute("errorActualizar", e.getMessage());
+            }
+        }
+
+        model.addAttribute("CategoriaData", categoriaData);
+
+        UsuarioData user = usuarioService.findById(id);
+        model.addAttribute("usuario", user);
+
+        List<Categoria> categorias = categoriaService.listadoCompleto();
+        Categoria categoria = categoriaService.buscarCategoriaPorId(categorias, categoriaId);
+
+        model.addAttribute("categoria", categoria);
+
+        return "editarCategoria";
+    }
 }

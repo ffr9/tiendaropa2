@@ -45,6 +45,9 @@
                         <td th:text="${categoria.descripcion}"></td>
                         <td th:text="${categoria.subcategoriaid}"></td>
                         <td>
+                            <a class="btn btn-success btn-xs" th:href="@{/admin/categorias/editar/{categoriaId}(categoriaId=${categoria.id})}">Editar</a>
+                        </td>
+                        <td>
                             <form th:action="@{'/admin/categorias/eliminar/' + ${categoria.id}}" method="post">
                                 <button type="submit" class="btn btn-danger btn-xs">Eliminar</button>
                             </form>
