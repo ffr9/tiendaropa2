@@ -10,15 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import tiendaropa.authentication.ManagerUserSession;
 import tiendaropa.controller.exception.UsuarioNoAutorizadoException;
 import tiendaropa.controller.exception.UsuarioNoLogeadoException;
+import tiendaropa.dto.CategoriaData;
 import tiendaropa.dto.PedidoData;
 import tiendaropa.dto.RegistroData;
 import tiendaropa.dto.UsuarioData;
+import tiendaropa.model.Categoria;
 import tiendaropa.model.Pedido;
 import tiendaropa.model.Usuario;
-import tiendaropa.service.PedidoService;
-import tiendaropa.service.PedidoServiceException;
-import tiendaropa.service.UsuarioService;
-import tiendaropa.service.UsuarioServiceException;
+import tiendaropa.service.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -34,6 +33,9 @@ public class AdminController {
 
     @Autowired
     PedidoService pedidoService;
+
+    @Autowired
+    CategoriaService categoriaService;
 
     // Método que recupera al usuario que está logueado y comprueba si es admin o no
     // Si ni si quiera está logueado se lanza la excepción de no estar logueado
@@ -272,5 +274,92 @@ public class AdminController {
         model.addAttribute("pedidos", pedidos);
 
         return "adminPedidos";
+    }
+
+    @GetMapping("/admin/categorias")
+    public String administracionCategorias(Model model, HttpSession session) {
+        Long id = managerUserSession.usuarioLogeado();
+
+        comprobarAdmin(id);
+
+        // Si está logueado, lo buscamos en la base de datos y lo añadimos al atributo "usuario"
+        UsuarioData user = usuarioService.findById(id);
+        // "usuario" lo usaremos en la vista html
+        model.addAttribute("usuario", user);
+
+        List<Categoria> categorias = categoriaService.listadoCompletoCategoria();
+        model.addAttribute("categorias", categorias);
+
+        return "adminCategorias";
+    }
+
+    @GetMapping("/admin/categorias/crear")
+    public String administracionCategoriaCrear(Model model, HttpSession session) {
+        model.addAttribute("categoriaData", new CategoriaData());
+
+        Long id = managerUserSession.usuarioLogeado();
+
+        comprobarAdmin(id);
+
+        // Si está logueado, lo buscamos en la base de datos y lo añadimos al atributo "usuario"
+        UsuarioData user = usuarioService.findById(id);
+        // "usuario" lo usaremos en la vista html
+        model.addAttribute("usuario", user);
+
+        return "crearCategoria";
+    }
+
+    @PostMapping("/admin/categorias/crear")
+    public String administracionCategoriaCrearSubmit(@Valid CategoriaData categoriaData, BindingResult result, Model model, HttpSession session) {
+        Long id = managerUserSession.usuarioLogeado();
+
+        comprobarAdmin(id);
+
+        if (result.hasErrors()) {
+            return "crearCategoria";
+        }
+
+        if (categoriaService.findByNombre(categoriaData.getNombre()) != null) {
+            model.addAttribute("categoriaData", categoriaData);
+            model.addAttribute("error", "La categoria " + categoriaData.getNombre() + " ya existe.");
+            return "crearCategoria";
+        }
+        CategoriaData categoria = new CategoriaData();
+        categoria.setNombre(categoriaData.getNombre());
+        categoria.setDescripcion(categoriaData.getDescripcion());
+        categoria.setSubcategoriaid(categoriaData.getSubcategoriaid());
+
+
+        categoriaService.crearCategoria(categoria);
+
+        UsuarioData user = usuarioService.findById(id);
+        model.addAttribute("usuario", user);
+
+        List<Categoria> categorias = categoriaService.listadoCompleto();
+        model.addAttribute("categorias", categorias);
+
+        return "redirect:/admin/categorias";
+    }
+
+    @PostMapping("/admin/categorias/eliminar/{categoriaId}")
+    public String administracionCategoriasEliminar(@PathVariable(value = "categoriaId") Long categoriaId,
+                                                   Model model, HttpSession session) {
+        Long id = managerUserSession.usuarioLogeado();
+
+        comprobarAdmin(id);
+
+        try {
+            categoriaService.eliminarCategoria(categoriaId);
+        } catch(CategoriaServiceException e) {
+            throw new CategoriaServiceException(e.getMessage());
+        }
+
+        UsuarioData user = usuarioService.findById(id);
+        model.addAttribute("usuario", user);
+
+        List<Categoria> categorias = categoriaService.listadoCompleto();
+        model.addAttribute("categorias", categorias);
+
+        return "adminCategorias";
     }
 }

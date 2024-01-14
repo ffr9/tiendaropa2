@@ -75,7 +75,7 @@ public class ProductoService {
     }
 
     @Transactional
-    public ProductoData modificarProducto(Long idProducto, String nombre, float precio, Integer stock, String numref, boolean destacado, Integer categoriaid){
+    public ProductoData modificarProducto(Long idProducto, String nombre, float precio, Integer stock, String numref, boolean destacado, Long categoriaid){
         logger.debug("Modificando producto " + idProducto + " - " + nombre);
         Producto producto = productoRepository.findById(idProducto).orElse(null);
         if (producto == null) {
@@ -94,7 +94,7 @@ public class ProductoService {
     }
 
     @Transactional
-    public ProductoData crearProducto(String nombre, float precio, Integer stock, String numref, boolean destacado, Integer categoriaid){
+    public ProductoData crearProducto(String nombre, float precio, Integer stock, String numref, boolean destacado, Long categoriaid){
         logger.debug("Creando producto " + nombre);
         Producto producto = new Producto(nombre, precio, stock, numref, destacado, categoriaid);
         productoRepository.save(producto);

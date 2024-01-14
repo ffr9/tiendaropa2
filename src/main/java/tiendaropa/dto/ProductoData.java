@@ -10,7 +10,7 @@ public class ProductoData {
     private Integer stock;
     private String numref;
     private boolean destacado = false;
-    private Integer categoriaid;
+    private Long categoriaid;
 
     private String img;
 
@@ -24,7 +24,7 @@ public class ProductoData {
     public ProductoData() {
     }
 
-    public ProductoData(String nombre, float precio, Integer stock, String numref, boolean destacado, Integer categoriaid) {
+    public ProductoData(String nombre, float precio, Integer stock, String numref, boolean destacado, Long categoriaid) {
         this.nombre = nombre;
         this.precio = precio;
         this.stock = stock;
@@ -77,11 +77,11 @@ public class ProductoData {
         this.destacado = destacado;
     }
 
-    public Integer getCategoriaid() {
+    public Long getCategoriaid() {
         return categoriaid;
     }
 
-    public void setCategoriaid(Integer categoriaid) {
+    public void setCategoriaid(Long categoriaid) {
         this.categoriaid = categoriaid;
     }
 

@@ -12,7 +12,7 @@ VALUES
     ('Smartphones', 'Teléfonos inteligentes', 1); -- Subcategoría de Electrónicos
 
 -- Seeder para la tabla Producto
-INSERT INTO Producto (Nombre, Precio, Stock, NumRef, Destacado, CategoriaId)
+INSERT INTO Producto (Nombre, Precio, Stock, NumRef, Destacado, CategoriaId,img)
 VALUES
     ('Smartphone Modelo A', 599.99, 50, '123456789', true, 3, 'smartphone.jpg'), -- Asociado a la categoría de Smartphones
     ('Laptop Modelo B', 1299.99, 30, '987654321', false, 1, 'laptop.jpg'); -- Asociado a la categoría de Electrónicos
