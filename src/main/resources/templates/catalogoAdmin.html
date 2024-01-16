@@ -18,7 +18,7 @@
 </div>
 
 <h2>Catálogo de administrador</h2>
-<div style="max-width: 400px; margin: 0 auto;">
+<div style="max-width: 400px; margin: 0 auto;margin-bottom: 60px;margin-top: 30px">
     <form method="post" th:action="@{'/tiendaropa/productos/buscarPorCategoria'}">
         <div class="input-group mb-3">
             <select class="form-control" id="categoriaId" name="categoriaId">
@@ -34,7 +34,7 @@
 
 <div class="catalogo">
     <!-- Iterar sobre la lista de productos y mostrarlos uno debajo del otro -->
-    <div th:each="producto : ${productos}" class="tarjeta-producto">
+    <div th:each="producto : ${productos}" class="tarjeta-producto" th:with="detallesURL=@{/tiendaropa/productos/{id}(id=${producto.id})}">
         <!-- Div que muestra todos los detalles del producto -->
         <div class="detalles">
             <h3 th:text="${producto.nombre}"></h3>
@@ -42,7 +42,7 @@
             <p th:text="${producto.stock}"></p>
             <p th:text="${producto.numref}"></p>
             <img th:src="@{/assets/{productoImg}(productoImg=${producto.img})}" th:alt="'Imagen de ' + ${producto.nombre}" class="imagenes-celdas"/>
-            
+
             <button class="btn btn-danger btn-xs" onmouseover="" style="cursor: pointer;"
                     th:onclick="'del(\'/tiendaropa/productos/' + ${producto.id} + '\')'">borrar
             </button>

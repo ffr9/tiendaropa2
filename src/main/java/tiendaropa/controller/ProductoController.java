@@ -209,6 +209,23 @@ public class ProductoController {
         }
     }
 
+    @GetMapping("/tiendaropa/productos/{id}")
+    public String mostrarDetallesProducto(@PathVariable Long id, Model model) {
+        // Lógica para obtener detalles del producto por su ID
+        ProductoData producto = productoService.findById(id);
+
+        if (producto == null) {
+            // Manejar el caso en el que no se encuentre el producto (puedes redirigir a una página de error)
+            return "redirect:/tiendaropa/catalogo";
+        }
+
+        // Agregar el producto a la vista para mostrar sus detalles
+        model.addAttribute("producto", producto);
+
+        return "detallesProducto";
+    }
+
+
 
 
 

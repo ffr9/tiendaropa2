@@ -18,7 +18,7 @@
 </div>
 
 <h2>Catálogo de productos</h2>
-<div style="max-width: 400px; margin: 0 auto;">
+<div style="max-width: 400px; margin: 0 auto;margin-bottom: 60px;margin-top: 30px">
     <form method="post" th:action="@{'/tiendaropa/productos/buscarPorCategoria'}">
         <div class="input-group mb-3">
             <select class="form-control" id="categoriaId" name="categoriaId">
@@ -32,23 +32,23 @@
     </form>
 </div>
 
-
-
 <div class="catalogo">
     <!-- Iterar sobre la lista de productos y mostrarlos uno debajo del otro -->
-    <div th:each="producto : ${productos}" class="tarjeta-producto">
-        <!-- Div que muestra todos los detalles del producto -->
-        <div class="detalles">
-            <h3 th:text="${producto.nombre}"></h3>
-            <p th:text="${producto.precio}"></p>
-            <p th:text="${producto.stock}"></p>
-            <p th:text="${producto.numref}"></p>
-            <img th:src="@{/assets/{productoImg}(productoImg=${producto.img})}" th:alt="'Imagen de ' + ${producto.nombre}" class="imagenes-celdas"/>
-
-
-        </div>
+    <div th:each="producto : ${productos}" class="tarjeta-producto" th:with="detallesURL=@{/tiendaropa/productos/{id}(id=${producto.id})}">
+        <!-- Enlace a la vista de detalles del producto -->
+        <a th:href="${detallesURL}" style="text-decoration: none; color: inherit;">
+            <!-- Div que muestra todos los detalles del producto -->
+            <div class="detalles">
+                <h3 th:text="${producto.nombre}"></h3>
+                <p class="lead mb-4" th:style="'font-size: 24px; '">
+                    <span th:text="${producto.precio} + '€'"></span>
+                </p>
+                <img th:src="@{/assets/{productoImg}(productoImg=${producto.img})}" th:alt="'Imagen de ' + ${producto.nombre}" class="imagenes-celdas"/>
+            </div>
+        </a>
     </div>
 </div>
+
 
 <div th:replace="fragments::javascript"/>
 <style>
@@ -70,6 +70,19 @@
         padding: 20px;
         margin: 20px auto;
         width: 550px;
+        transition: transform 0.3s, background-color 0.3s;
+        cursor: pointer;
+    }
+
+    .tarjeta-producto:hover {
+        transform: scale(1.1);
+        background-color: #f0f0f0;
+    }
+
+    .tarjeta-producto .detalles {
+        color: #000; /* Cambia el color del texto a negro por defecto */
+        text-decoration: none; /* Elimina el subrayado por defecto */
+        transition: color 0.3s, text-decoration 0.3s;
     }
 </style>
 </body>
