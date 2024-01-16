@@ -18,6 +18,19 @@
 </div>
 
 <h2>Catálogo de administrador</h2>
+<div style="max-width: 400px; margin: 0 auto;">
+    <form method="post" th:action="@{'/tiendaropa/productos/buscarPorCategoria'}">
+        <div class="input-group mb-3">
+            <select class="form-control" id="categoriaId" name="categoriaId">
+                <option value="">Todas las categorías</option>
+                <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.nombre}"></option>
+            </select>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Buscar por Categoría</button>
+            </div>
+        </div>
+    </form>
+</div>
 
 <div class="catalogo">
     <!-- Iterar sobre la lista de productos y mostrarlos uno debajo del otro -->

@@ -6,9 +6,12 @@ import tiendaropa.authentication.ManagerUserSession;
 import tiendaropa.controller.exception.ProductoNotFoundException;
 import tiendaropa.controller.exception.UsuarioNoLogeadoException;
 import tiendaropa.dto.BusquedaData;
+import tiendaropa.dto.CategoriaData;
 import tiendaropa.dto.UsuarioData;
+import tiendaropa.model.Categoria;
 import tiendaropa.model.Producto;
 import tiendaropa.dto.ProductoData;
+import tiendaropa.service.CategoriaService;
 import tiendaropa.service.ProductoService;
 import tiendaropa.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,9 @@ public class ProductoController {
     @Autowired
     ProductoService productoService;
 
+    @Autowired
+    CategoriaService categoriaService;
+
     private boolean comprobarUsuarioLogeado() {
         Long idUsuarioLogeado = managerUserSession.usuarioLogeado();
         if (idUsuarioLogeado == null)
@@ -44,19 +50,35 @@ public class ProductoController {
     }
 
     @GetMapping("/tiendaropa/catalogo")
-    public String mostrarCatalogo(Model model) {
+    public String mostrarCatalogo(
+            @RequestParam(name = "categoriaId", required = false) Long categoriaId,
+            Model model) {
 
         if(comprobarUsuarioLogeado()) {
             UsuarioData usuario = usuarioService.findById(managerUserSession.usuarioLogeado());
             model.addAttribute("usuario", usuario);
-        }else{
+        } else {
             model.addAttribute("usuario", null);
         }
-        List<ProductoData> productos = productoService.allProductos();
+
+        List<Categoria> categorias = categoriaService.listadoCompleto();
+        model.addAttribute("categorias", categorias);
+
+        List<ProductoData> productos;
+
+        if (categoriaId != null) {
+            // Si se proporciona una categoría, filtrar por esa categoría
+            productos = productoService.buscarProductoPorCategoria(categoriaId);
+        } else {
+            // Si no se proporciona ninguna categoría, mostrar todos los productos
+            productos = productoService.allProductos();
+        }
+
         model.addAttribute("productos", productos);
 
         return "catalogo";
     }
+
 
     @GetMapping("/tiendaropa/catalogo/busqueda")
     public String buscarProducto(@ModelAttribute BusquedaData busquedaData, Model model){
@@ -81,6 +103,9 @@ public class ProductoController {
         }else{
             model.addAttribute("usuario", null);
         }
+        List<Categoria> categorias = categoriaService.listadoCompleto();
+        model.addAttribute("categorias", categorias);
+
         List<ProductoData> productos = productoService.allProductos();
         model.addAttribute("productos", productos);
 
@@ -165,5 +190,27 @@ public class ProductoController {
         flash.addFlashAttribute("mensaje", "Producto creado correctamente");
         return "redirect:/admin/tiendaropa/catalogo";
     }
+
+    @PostMapping("/tiendaropa/productos/buscarPorCategoria")
+    public String buscarProductosPorCategoria(
+            @RequestParam(name = "categoriaId", required = false) Long categoriaId,
+            Model model) {
+
+        // Cargar las categorías desde la base de datos
+        List<Categoria> categorias = categoriaService.listadoCompleto();
+        model.addAttribute("categorias", categorias);
+
+        if (categoriaId != null) {
+            // Si se selecciona una categoría, redirige a la misma página pero con el parámetro de categoría
+            return "redirect:/tiendaropa/catalogo?categoriaId=" + categoriaId;
+        } else {
+            // Si no se selecciona ninguna categoría, mostrar todos los productos
+            return "redirect:/tiendaropa/catalogo";
+        }
+    }
+
+
+
+
 
 }

@@ -1,5 +1,6 @@
 package tiendaropa.service;
 
+import tiendaropa.dto.CategoriaData;
 import tiendaropa.model.Producto;
 import tiendaropa.dto.ProductoData;
 import tiendaropa.model.Usuario;
@@ -105,5 +106,22 @@ public class ProductoService {
     public List<Producto> obtenerProductosDestacados() {
         return productoRepository.findByDestacadoIsTrue(); // Suponiendo que tienes un campo 'destacado' en tu entidad Producto
     }
+
+    @Transactional
+    public List<ProductoData> buscarProductoPorCategoria(Long categoriaId) {
+        if (categoriaId == null) {
+            throw new IllegalArgumentException("La categoría no puede ser nula");
+        }
+
+        List<ProductoData> productos = allProductos();
+        // Filtrar productos por la categoría proporcionada
+        List<ProductoData> filtrados = productos.stream()
+                .filter(producto -> categoriaId.equals(producto.getCategoriaid()))
+                .collect(Collectors.toList());
+
+        return filtrados;
+    }
+
+
 
 }
