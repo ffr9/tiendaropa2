@@ -126,10 +126,14 @@
         if (confirm('¿Estás seguro/a de que quieres borrar el producto?')) {
             fetch(urlBorrar, {
                 method: 'DELETE'
-            }).then((res) => location.reload());
+            }).then((res) => {
+                // Redirige a la vista de administrador después de borrar el producto
+                window.location.href = '/admin/tiendaropa/catalogo';
+            });
         }
     }
 </script>
+
 </body>
 
 </html>
