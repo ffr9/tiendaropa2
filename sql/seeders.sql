@@ -32,8 +32,8 @@ VALUES
 -- Seeder para la tabla Comentario
 INSERT INTO Comentario (Descripcion, Fecha, UsuarioId, ProductoId)
 VALUES
-    ('Excelente producto', '2023-01-01', 1, 1), -- Comentario del Usuario con Id 1 al Producto con Id 1
-    ('Buena calidad', '2023-01-02', 2, 2); -- Comentario del Usuario con Id 2 al Producto con Id 2
+    ('Excelente producto', '2023-01-01', 9, 1), -- Comentario del Usuario con Id 1 al Producto con Id 1
+    ('Buena calidad', '2023-01-02', 9, 2); -- Comentario del Usuario con Id 2 al Producto con Id 2
 
 -- Seeder para la tabla Pedido
 INSERT INTO Pedido (Fecha, UsuarioId)
