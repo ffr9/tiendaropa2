@@ -114,11 +114,11 @@ public class ProductoController {
         //return "catalogo";
     }
 
-    @DeleteMapping("/tiendaropa/productos/{id}")
+
+
+    @DeleteMapping("/admin/tiendaropa/productos/{id}")
     @ResponseBody
-    // La anotación @ResponseBody sirve para que la cadena devuelta sea la resupuesta
-    // de la petición HTTP, en lugar de una plantilla thymeleaf
-    public String borrarTarea(@PathVariable(value="id") Long idProducto, RedirectAttributes flash, HttpSession session) {
+    public String borrarProducto(@PathVariable(value="id") Long idProducto, RedirectAttributes flash, HttpSession session) {
         ProductoData producto = productoService.findById(idProducto);
         if (producto == null) {
             throw new ProductoNotFoundException();
@@ -126,8 +126,9 @@ public class ProductoController {
         if(comprobarUsuarioLogeado()){
             productoService.borrarProducto(idProducto);
         }
-        return "";
+        return "redirect:/admin/tiendaropa/catalogo";
     }
+
 
 
 

@@ -56,7 +56,7 @@
                 <img th:src="@{/assets/{productoImg}(productoImg=${producto.img})}" th:alt="'Imagen de ' + ${producto.nombre}" class="imagenes-celdas"/>
             </div>
             <button class="btn btn-danger btn-xs" onmouseover="" style="cursor: pointer;"
-                    th:onclick="'del(\'/tiendaropa/productos/' + ${producto.id} + '\')'">borrar
+                    th:onclick="'del(\'/admin/tiendaropa/productos/' + ${producto.id} + '\')'">borrar
             </button>
             <a class="btn btn-primary btn-xs" th:href="@{/admin/tiendaropa/productos/{id}/editar(id=${producto.id})}"/>editar</a>
         </a>

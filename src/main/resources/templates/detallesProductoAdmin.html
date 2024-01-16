@@ -30,10 +30,11 @@
             <p th:text="'Stock: ' + ${producto.stock}"></p>
             <p th:text="'Número de referencia: ' + ${producto.numref}"></p>
 
-            <!-- Botón para añadir al carrito (sin funcionalidad) -->
             <button class="btn btn-danger btn-xs" onmouseover="" style="cursor: pointer;"
                     th:onclick="'del(\'/admin/tiendaropa/productos/' + ${producto.id} + '\')'">borrar
             </button>
+
+
             <a class="btn btn-primary btn-xs" th:href="@{/admin/tiendaropa/productos/{id}/editar(id=${producto.id})}"/>editar</a>
 
             <!-- Volver al catálogo -->
