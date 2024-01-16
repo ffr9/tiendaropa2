@@ -20,7 +20,7 @@ public class Producto {
     private Integer stock;
     private String numref;
     private boolean destacado = false;
-    private Integer categoriaid;
+    private Long categoriaid;
 
     // Al eliminar las lineasPedido de los pedidos de un usuario, se eliminarán las lineasPedido también de esta lista.
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
@@ -44,7 +44,7 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(String nombre, float precio, Integer stock, String numref, boolean destacado, Integer categoriaid) {
+    public Producto(String nombre, float precio, Integer stock, String numref, boolean destacado, Long categoriaid) {
         this.nombre = nombre;
         this.precio = precio;
         this.stock = stock;
@@ -97,11 +97,11 @@ public class Producto {
         this.destacado = destacado;
     }
 
-    public Integer getCategoriaid() {
+    public Long getCategoriaid() {
         return categoriaid;
     }
 
-    public void setCategoriaid(Integer categoriaid) {
+    public void setCategoriaid(Long categoriaid) {
         this.categoriaid = categoriaid;
     }
 
