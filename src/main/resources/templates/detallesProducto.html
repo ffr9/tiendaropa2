@@ -22,6 +22,7 @@
             <img th:src="@{/assets/{productoImg}(productoImg=${producto.img})}" th:alt="'Imagen de ' + ${producto.nombre}" class="img-fluid" />
         </div>
         <div class="col-md-6">
+            <div th:text="${producto.id}"></div>
             <h2 class="mb-3" th:text="${producto.nombre}"></h2>
             <p class="lead mb-4" th:style="'font-size: 24px; font-weight: bold;'">
                 <span th:text="'Precio: '"></span>
@@ -30,8 +31,11 @@
             <p th:text="'Stock: ' + ${producto.stock}"></p>
             <p th:text="'Número de referencia: ' + ${producto.numref}"></p>
 
-            <!-- Botón para añadir al carrito (sin funcionalidad) -->
-            <button class="btn btn-primary" >Añadir al carrito</button>
+            <form action="/tiendaropa/carrito" method="post">
+                <input type="hidden" name="productoId" th:value="${producto.id}" />
+                <input type="number" name="cantidad" value="1" />
+                <button type="submit" class="btn btn-primary">Añadir al carrito</button>
+            </form>
 
             <!-- Volver al catálogo -->
             <a class="btn btn-secondary ml-2" th:href="@{/tiendaropa/catalogo}">Volver al catálogo</a>
