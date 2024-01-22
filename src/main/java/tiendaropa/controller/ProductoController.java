@@ -10,6 +10,7 @@ import tiendaropa.model.Categoria;
 import tiendaropa.model.Comentario;
 import tiendaropa.model.Producto;
 import tiendaropa.service.CategoriaService;
+import tiendaropa.service.ComentarioService;
 import tiendaropa.service.ProductoService;
 import tiendaropa.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,11 @@ public class ProductoController {
 
     @Autowired
     CategoriaService categoriaService;
+
+    @Autowired
+    private ComentarioService comentarioService;
+
+
 
     private boolean comprobarUsuarioLogeado() {
         Long idUsuarioLogeado = managerUserSession.usuarioLogeado();
@@ -288,6 +294,31 @@ public class ProductoController {
 
         return "detallesProductoAdmin";
     }
+
+    @PostMapping("/tiendaropa/productos/comentar/{id}")
+    public String agregarComentario(@PathVariable Long id,
+                                    @RequestParam("nuevoComentario") String nuevoComentario,
+                                    HttpSession session,Model model) {
+        if(!comprobarUsuarioLogeado()) {
+            throw new UsuarioNoLogeadoException();
+        }
+        UsuarioData usuario = usuarioService.findById(managerUserSession.usuarioLogeado());
+        Long usuarioId = usuario.getId();
+
+        comentarioService.agregarComentario(usuarioId, id, nuevoComentario);
+        model.addAttribute("usuario", usuario);
+        ProductoData producto = productoService.findById(id);
+        model.addAttribute("producto", producto);
+        List<ComentarioData> comentarios = productoService.obtenerComentariosPorProducto(id);
+        model.addAttribute("comentarios", comentarios);
+
+        return "redirect:/tiendaropa/productos/" + id;
+    }
+
+
+
+
+
 
 
 

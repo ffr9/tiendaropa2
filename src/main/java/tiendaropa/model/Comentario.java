@@ -30,7 +30,9 @@ public class Comentario implements Serializable {
 
     public Comentario() {}
 
-    public Comentario(Usuario usuario, Producto producto) {
+    public Comentario(String descripcion,Date fecha,Usuario usuario, Producto producto) {
+        setDescripcion(descripcion);
+        setFecha(fecha);
         setUsuario(usuario);
         setProducto(producto);
     }

@@ -35,6 +35,10 @@ public class CarritoController {
         Long usuarioId = managerUserSession.usuarioLogeado();
         UsuarioData user = usuarioService.findById(usuarioId);
 
+        if(usuarioId == null){
+
+        }
+
         List<Usuario> usuarios = usuarioService.listadoCompleto();
         Usuario usuario = usuarioService.buscarUsuarioPorId(usuarios, usuarioId);
 
