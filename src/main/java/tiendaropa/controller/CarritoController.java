@@ -9,9 +9,7 @@ import tiendaropa.controller.exception.ProductoNotFoundException;
 import tiendaropa.controller.exception.UsuarioNoLogeadoException;
 import tiendaropa.dto.*;
 import tiendaropa.model.*;
-import tiendaropa.service.CategoriaService;
-import tiendaropa.service.ProductoService;
-import tiendaropa.service.UsuarioService;
+import tiendaropa.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,14 +17,13 @@ import org.springframework.ui.Model;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Set;
-import tiendaropa.service.CarritoService;
 
 @Controller
 public class CarritoController {
     @Autowired
     private CarritoService carritoService;
     @Autowired
-    private CarritoService lineaCarritoService;
+    private LineaCarritoService lineaCarritoService;
     @Autowired
     private ManagerUserSession managerUserSession;
     @Autowired
@@ -40,7 +37,6 @@ public class CarritoController {
 
         List<Usuario> usuarios = usuarioService.listadoCompleto();
         Usuario usuario = usuarioService.buscarUsuarioPorId(usuarios, usuarioId);
-
 
         // Obtener el carrito del usuario
         Carrito carrito = carritoService.obtenerCarritoUsuario(usuario);

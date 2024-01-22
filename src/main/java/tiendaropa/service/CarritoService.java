@@ -66,6 +66,7 @@ public class CarritoService {
                     // Si no existe un carrito para el usuario, puedes crear uno nuevo y guardarlo
                     Carrito nuevoCarrito = new Carrito();
                     nuevoCarrito.setUsuario(usuario);
+                    usuario.setCarrito(nuevoCarrito);
                     return carritoRepository.save(nuevoCarrito);
                 });
     }

@@ -40,13 +40,10 @@ public class LineaCarritoService {
     @Autowired
     ProductoService productoService;
 
-
-
-
     @Autowired
     private ModelMapper modelMapper;
 
-
+    @Autowired
     private LineaCarritoRepository lineaCarritoRepository;
 
     public void añadirProductos(Carrito carrito, Long productoId, int cantidad)
@@ -57,7 +54,6 @@ public class LineaCarritoService {
         }
 
         // Obtener el producto
-        //ProductoData productoData = productoService.findById(productoId);
         Producto producto = productoRepository.findById(productoId).orElse(null);
         if (producto == null) {
             throw new ProductoNotFoundException();
@@ -68,24 +64,15 @@ public class LineaCarritoService {
             throw new SinStockException();
         }
 
-        // Añadir el producto al carrito
         LineaCarrito lineaCarrito = new LineaCarrito();
-        //carrito.addLineascarrito(lineaCarrito);
 
-        lineaCarrito.setCarrito(carrito);
+        producto.setStock(producto.getStock() - cantidad);
+
         lineaCarrito.setProducto(producto);
         lineaCarrito.setCantidad(cantidad);
 
+        carrito.addLineascarrito(lineaCarrito);
 
-        // Actualizar el stock del producto
-        producto.setStock(producto.getStock() - cantidad);
         productoRepository.save(producto);
-
-
-        // Guardar la línea en el carrito
-        lineaCarritoRepository.save(lineaCarrito);
     }
-
-
-
 }

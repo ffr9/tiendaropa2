@@ -1,5 +1,8 @@
 package tiendaropa.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -26,7 +29,8 @@ public class Producto {
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
     Set<LineaPedido> lineaspedido = new HashSet<>();
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
     Set<LineaCarrito> lineascarrito = new HashSet<>();
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)

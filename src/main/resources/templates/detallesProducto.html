@@ -33,7 +33,7 @@
 
             <form action="/tiendaropa/carrito" method="post">
                 <input type="hidden" name="productoId" th:value="${producto.id}" />
-                <input type="number" name="cantidad" value="1" />
+                <input type="number" name="cantidad" value="1" min="1" th:max="${producto.stock}" step="1"/>
                 <button type="submit" class="btn btn-primary">Añadir al carrito</button>
             </form>
 

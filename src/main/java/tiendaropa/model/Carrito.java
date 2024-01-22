@@ -1,5 +1,8 @@
 package tiendaropa.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -22,7 +25,8 @@ public class Carrito implements Serializable {
     @JoinColumn(name = "usuarioid")
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "carrito")
+    @OneToMany(mappedBy = "carrito", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
     Set<LineaCarrito> lineascarrito = new HashSet<>();
 
     // Constructor vacío necesario para JPA/Hibernate.

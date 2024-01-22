@@ -68,7 +68,7 @@ public class LineaCarrito implements Serializable {
     public void setProducto(Producto producto) {
         if(this.producto != producto) {
             this.producto = producto;
-            //producto.addLineascarrito(this);
+            producto.addLineascarrito(this);
         }
     }
 
