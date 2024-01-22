@@ -5,10 +5,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import tiendaropa.authentication.ManagerUserSession;
 import tiendaropa.controller.exception.ProductoNotFoundException;
 import tiendaropa.controller.exception.UsuarioNoLogeadoException;
-import tiendaropa.dto.BusquedaData;
-import tiendaropa.dto.UsuarioData;
+import tiendaropa.dto.*;
+import tiendaropa.model.Categoria;
+import tiendaropa.model.Comentario;
 import tiendaropa.model.Producto;
-import tiendaropa.dto.ProductoData;
+import tiendaropa.service.CategoriaService;
 import tiendaropa.service.ProductoService;
 import tiendaropa.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ProductoController {
@@ -29,6 +31,9 @@ public class ProductoController {
 
     @Autowired
     ProductoService productoService;
+
+    @Autowired
+    CategoriaService categoriaService;
 
     private boolean comprobarUsuarioLogeado() {
         Long idUsuarioLogeado = managerUserSession.usuarioLogeado();
@@ -44,19 +49,35 @@ public class ProductoController {
     }
 
     @GetMapping("/tiendaropa/catalogo")
-    public String mostrarCatalogo(Model model) {
+    public String mostrarCatalogo(
+            @RequestParam(name = "categoriaId", required = false) Long categoriaId,
+            Model model) {
 
         if(comprobarUsuarioLogeado()) {
             UsuarioData usuario = usuarioService.findById(managerUserSession.usuarioLogeado());
             model.addAttribute("usuario", usuario);
-        }else{
+        } else {
             model.addAttribute("usuario", null);
         }
-        List<ProductoData> productos = productoService.allProductos();
+
+        List<Categoria> categorias = categoriaService.listadoCompleto();
+        model.addAttribute("categorias", categorias);
+
+        List<ProductoData> productos;
+
+        if (categoriaId != null) {
+            // Si se proporciona una categoría, filtrar por esa categoría
+            productos = productoService.buscarProductoPorCategoria(categoriaId);
+        } else {
+            // Si no se proporciona ninguna categoría, mostrar todos los productos
+            productos = productoService.allProductos();
+        }
+
         model.addAttribute("productos", productos);
 
         return "catalogo";
     }
+
 
     @GetMapping("/tiendaropa/catalogo/busqueda")
     public String buscarProducto(@ModelAttribute BusquedaData busquedaData, Model model){
@@ -81,6 +102,9 @@ public class ProductoController {
         }else{
             model.addAttribute("usuario", null);
         }
+        List<Categoria> categorias = categoriaService.listadoCompleto();
+        model.addAttribute("categorias", categorias);
+
         List<ProductoData> productos = productoService.allProductos();
         model.addAttribute("productos", productos);
 
@@ -90,11 +114,11 @@ public class ProductoController {
         //return "catalogo";
     }
 
-    @DeleteMapping("/tiendaropa/productos/{id}")
+
+
+    @DeleteMapping("/admin/tiendaropa/productos/{id}")
     @ResponseBody
-    // La anotación @ResponseBody sirve para que la cadena devuelta sea la resupuesta
-    // de la petición HTTP, en lugar de una plantilla thymeleaf
-    public String borrarTarea(@PathVariable(value="id") Long idProducto, RedirectAttributes flash, HttpSession session) {
+    public String borrarProducto(@PathVariable(value="id") Long idProducto, RedirectAttributes flash, HttpSession session) {
         ProductoData producto = productoService.findById(idProducto);
         if (producto == null) {
             throw new ProductoNotFoundException();
@@ -102,8 +126,11 @@ public class ProductoController {
         if(comprobarUsuarioLogeado()){
             productoService.borrarProducto(idProducto);
         }
-        return "";
+        return "redirect:/admin/tiendaropa/catalogo";
     }
+
+
+
 
     @GetMapping("/admin/tiendaropa/productos/{id}/editar")
     public String formEditarProducto(@PathVariable(value="id") Long idProducto, @ModelAttribute ProductoData productoData,
@@ -165,5 +192,110 @@ public class ProductoController {
         flash.addFlashAttribute("mensaje", "Producto creado correctamente");
         return "redirect:/admin/tiendaropa/catalogo";
     }
+
+    @PostMapping("/tiendaropa/productos/buscarPorCategoria")
+    public String buscarProductosPorCategoria(
+            @RequestParam(name = "categoriaId", required = false) Long categoriaId,
+            Model model) {
+
+        // Cargar las categorías desde la base de datos
+        List<Categoria> categorias = categoriaService.listadoCompleto();
+        model.addAttribute("categorias", categorias);
+
+        if (categoriaId != null) {
+            // Si se selecciona una categoría, redirige a la misma página pero con el parámetro de categoría
+            return "redirect:/tiendaropa/catalogo?categoriaId=" + categoriaId;
+        } else {
+            // Si no se selecciona ninguna categoría, mostrar todos los productos
+            return "redirect:/tiendaropa/catalogo";
+        }
+    }
+
+    @PostMapping("/admin/tiendaropa/productos/buscarPorCategoria")
+    public String buscarProductosPorCategoriaAdmin(
+            @RequestParam(name = "categoriaId", required = false) Long categoriaId,
+            Model model,HttpSession session) {
+
+        if(!comprobarUsuarioLogeado()) {
+            throw new UsuarioNoLogeadoException();
+        }
+
+        UsuarioData usuario = usuarioService.findById(managerUserSession.usuarioLogeado());
+        model.addAttribute("usuario", usuario);
+
+        // Cargar las categorías desde la base de datos
+        List<Categoria> categorias = categoriaService.listadoCompleto();
+        model.addAttribute("categorias", categorias);
+
+        List<ProductoData> productos;
+
+        if (categoriaId != null) {
+            // Si se selecciona una categoría, filtrar por esa categoría
+            productos = productoService.buscarProductoPorCategoria(categoriaId);
+        } else {
+            // Si no se selecciona ninguna categoría, mostrar todos los productos
+            productos = productoService.allProductos();
+        }
+
+        model.addAttribute("productos", productos);
+
+        return "catalogoAdmin";
+    }
+
+
+    @GetMapping("/tiendaropa/productos/{id}")
+    public String mostrarDetallesProducto(@PathVariable Long id, Model model) {
+        // Lógica para obtener detalles del producto por su ID
+        ProductoData producto = productoService.findById(id);
+
+        if (producto == null) {
+            // Manejar el caso en el que no se encuentre el producto (puedes redirigir a una página de error)
+            return "redirect:/tiendaropa/catalogo";
+        }
+
+        if(comprobarUsuarioLogeado()) {
+            UsuarioData usuario = usuarioService.findById(managerUserSession.usuarioLogeado());
+            model.addAttribute("usuario", usuario);
+        }else{
+            model.addAttribute("usuario", null);
+        }
+
+        // Agregar el producto a la vista para mostrar sus detalles
+        model.addAttribute("producto", producto);
+        List<ComentarioData> comentarios = productoService.obtenerComentariosPorProducto(id);
+        model.addAttribute("comentarios", comentarios);
+
+        return "detallesProducto";
+    }
+
+    @GetMapping("/admin/tiendaropa/productos/{id}")
+    public String mostrarDetallesProductoAdmin(@PathVariable Long id, Model model,HttpSession session) {
+        // Lógica para obtener detalles del producto por su ID
+        ProductoData producto = productoService.findById(id);
+
+        if (producto == null) {
+            // Manejar el caso en el que no se encuentre el producto (puedes redirigir a una página de error)
+            return "redirect:/tiendaropa/catalogo";
+        }
+
+        UsuarioData usuario = usuarioService.findById(managerUserSession.usuarioLogeado());
+        model.addAttribute("usuario", usuario);
+
+        // Agregar el producto a la vista para mostrar sus detalles
+        model.addAttribute("producto", producto);
+        List<ComentarioData> comentarios = productoService.obtenerComentariosPorProducto(id);
+        model.addAttribute("comentarios", comentarios);
+
+        return "detallesProductoAdmin";
+    }
+
+
+
+
+
+
+
+
+
 
 }

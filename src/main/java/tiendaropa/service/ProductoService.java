@@ -1,8 +1,12 @@
 package tiendaropa.service;
 
+import tiendaropa.dto.CategoriaData;
+import tiendaropa.dto.ComentarioData;
+import tiendaropa.model.Comentario;
 import tiendaropa.model.Producto;
 import tiendaropa.dto.ProductoData;
 import tiendaropa.model.Usuario;
+import tiendaropa.repository.ComentarioRepository;
 import tiendaropa.repository.ProductoRepository;
 import tiendaropa.repository.UsuarioRepository;
 import org.modelmapper.ModelMapper;
@@ -14,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -26,6 +31,9 @@ public class ProductoService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private ProductoRepository productoRepository;
+
+    @Autowired
+    private ComentarioRepository comentarioRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -75,7 +83,7 @@ public class ProductoService {
     }
 
     @Transactional
-    public ProductoData modificarProducto(Long idProducto, String nombre, float precio, Integer stock, String numref, boolean destacado, Integer categoriaid){
+    public ProductoData modificarProducto(Long idProducto, String nombre, float precio, Integer stock, String numref, boolean destacado, Long categoriaid){
         logger.debug("Modificando producto " + idProducto + " - " + nombre);
         Producto producto = productoRepository.findById(idProducto).orElse(null);
         if (producto == null) {
@@ -94,7 +102,7 @@ public class ProductoService {
     }
 
     @Transactional
-    public ProductoData crearProducto(String nombre, float precio, Integer stock, String numref, boolean destacado, Integer categoriaid){
+    public ProductoData crearProducto(String nombre, float precio, Integer stock, String numref, boolean destacado, Long categoriaid){
         logger.debug("Creando producto " + nombre);
         Producto producto = new Producto(nombre, precio, stock, numref, destacado, categoriaid);
         productoRepository.save(producto);
@@ -105,5 +113,43 @@ public class ProductoService {
     public List<Producto> obtenerProductosDestacados() {
         return productoRepository.findByDestacadoIsTrue(); // Suponiendo que tienes un campo 'destacado' en tu entidad Producto
     }
+
+    @Transactional
+    public List<ProductoData> buscarProductoPorCategoria(Long categoriaId) {
+        if (categoriaId == null) {
+            throw new IllegalArgumentException("La categoría no puede ser nula");
+        }
+
+        List<ProductoData> productos = allProductos();
+        // Filtrar productos por la categoría proporcionada
+        List<ProductoData> filtrados = productos.stream()
+                .filter(producto -> categoriaId.equals(producto.getCategoriaid()))
+                .collect(Collectors.toList());
+
+        return filtrados;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ComentarioData> obtenerComentariosPorProducto(Long productoId) {
+        logger.debug("Obteniendo comentarios para el producto " + productoId);
+
+        Producto producto = productoRepository.findById(productoId).orElse(null);
+
+        if (producto == null) {
+            logger.error("Producto no encontrado con ID: " + productoId);
+            return Collections.emptyList();
+        }
+
+        Set<Comentario> comentarios = producto.getComentarios();
+
+        // Mapear los comentarios a DTO si es necesario
+        List<ComentarioData> comentariosDTO = comentarios.stream()
+                .map(comentario -> modelMapper.map(comentario, ComentarioData.class))
+                .collect(Collectors.toList());
+
+        return comentariosDTO;
+    }
+
+
 
 }
