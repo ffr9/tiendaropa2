@@ -85,7 +85,7 @@ public class CarritoService {
         return total;
     }
 
-    @Transactional
+    /*@Transactional
     public void eliminarTodasLasLineasCarrito(Carrito carrito) {
         try {
             // Verifica que la colección no sea nula
@@ -102,7 +102,25 @@ public class CarritoService {
             e.printStackTrace(); // Imprime la pila de llamadas para obtener más información
             throw e; // Reenvía la excepción para un manejo adecuado
         }
-    }
+    }*/
 
+    /*@Transactional
+    public void eliminarCarrito(Carrito carrito) {
+        try {
+            if (carrito != null) {
+                // Eliminar todas las líneas de carrito asociadas al carrito
+                lineaCarritoRepository.deleteAll(carrito.getLineascarrito());
+
+                // Eliminar el carrito
+                carritoRepository.delete(carrito);
+            } else {
+                System.out.println("El carrito es nulo.");
+            }
+        } catch (Exception e) {
+            System.err.println("Error al eliminar el carrito.");
+            e.printStackTrace();
+            throw e;
+        }
+    }*/
 }
 
