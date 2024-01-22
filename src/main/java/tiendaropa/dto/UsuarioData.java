@@ -1,5 +1,9 @@
 package tiendaropa.dto;
 
+import tiendaropa.model.Carrito;
+
+import javax.persistence.CascadeType;
+import javax.persistence.OneToOne;
 import java.util.Objects;
 
 // Data Transfer Object para la clase Usuario
@@ -16,6 +20,16 @@ public class UsuarioData {
     private String poblacion;
     private String direccion;
     private boolean admin;
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private Carrito carrito;
+
+    public Carrito getCarrito() {
+        return carrito;
+    }
+
+    public void setCarrito(Carrito carrito) {
+        this.carrito = carrito;
+    }
 
     // Getters y setters
 
