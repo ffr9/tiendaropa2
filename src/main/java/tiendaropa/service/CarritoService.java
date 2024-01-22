@@ -85,42 +85,21 @@ public class CarritoService {
         return total;
     }
 
-    /*@Transactional
+
+
+
+    @Transactional
     public void eliminarTodasLasLineasCarrito(Carrito carrito) {
         try {
-            // Verifica que la colección no sea nula
-            if (carrito.getLineascarrito() != null) {
-                // Elimina todas las líneas de carrito asociadas al carrito
-                carrito.getLineascarrito().clear();
-                // Actualiza el carrito en la base de datos para aplicar los cambios
-                carritoRepository.save(carrito);
-            } else {
-                System.out.println("La colección de líneas de carrito es nula.");
-            }
+            // Elimina todas las líneas de carrito asociadas al carrito por su ID
+            lineaCarritoRepository.deleteByCarritoId(carrito.getId());
         } catch (Exception e) {
             System.err.println("Error al eliminar las líneas de carrito.");
-            e.printStackTrace(); // Imprime la pila de llamadas para obtener más información
-            throw e; // Reenvía la excepción para un manejo adecuado
-        }
-    }*/
-
-    /*@Transactional
-    public void eliminarCarrito(Carrito carrito) {
-        try {
-            if (carrito != null) {
-                // Eliminar todas las líneas de carrito asociadas al carrito
-                lineaCarritoRepository.deleteAll(carrito.getLineascarrito());
-
-                // Eliminar el carrito
-                carritoRepository.delete(carrito);
-            } else {
-                System.out.println("El carrito es nulo.");
-            }
-        } catch (Exception e) {
-            System.err.println("Error al eliminar el carrito.");
             e.printStackTrace();
             throw e;
         }
-    }*/
+    }
+
+
 }
 

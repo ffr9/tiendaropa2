@@ -99,8 +99,7 @@ public class CarritoController {
             System.out.println(carrito.getId());
 
             // Eliminar todas las líneas del carrito
-            // carritoService.eliminarTodasLasLineasCarrito(carrito);
-            // carritoService.eliminarCarrito(carrito);
+            carritoService.eliminarTodasLasLineasCarrito(carrito);
 
             model.addAttribute("usuario", user);
 
