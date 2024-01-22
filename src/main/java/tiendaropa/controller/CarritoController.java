@@ -44,7 +44,10 @@ public class CarritoController {
         // Obtener todas las líneas de ese carrito
         List<LineaCarrito> lineasCarrito = carritoService.allLineasCarrito(carrito);
 
+        float total = carritoService.obtenerTotalCarrito(carrito);
+
         // Pasar las líneas del carrito al modelo para que la vista pueda mostrarlas
+        model.addAttribute("totalCarrito", total);
         model.addAttribute("lineasCarrito", lineasCarrito);
         model.addAttribute("usuario", user);
 

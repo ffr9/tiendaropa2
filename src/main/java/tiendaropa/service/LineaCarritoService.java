@@ -46,6 +46,7 @@ public class LineaCarritoService {
     @Autowired
     private LineaCarritoRepository lineaCarritoRepository;
 
+    @Transactional
     public void añadirProductos(Carrito carrito, Long productoId, int cantidad)
             throws ProductoNotFoundException, UsuarioNoLogeadoException {
         // Verificar si el usuario está logeado
@@ -64,15 +65,30 @@ public class LineaCarritoService {
             throw new SinStockException();
         }
 
-        LineaCarrito lineaCarrito = new LineaCarrito();
+        // Buscar si ya existe una línea de carrito para este producto en el carrito actual
+        LineaCarrito lineaExistente = carrito.getLineascarrito().stream()
+                .filter(linea -> linea.getProducto().getNombre().equals(producto.getNombre()))
+                .findFirst()
+                .orElse(null);
 
+
+
+        if (lineaExistente != null) {
+            // Si ya existe, actualizar la cantidad
+            lineaExistente.setCantidad(lineaExistente.getCantidad() + cantidad);
+            logger.debug("Linea existente dentro: " + lineaExistente.getCantidad());
+
+            lineaCarritoRepository.save(lineaExistente);
+        } else {
+            // Si no existe, crear una nueva línea de carrito
+            LineaCarrito nuevaLinea = new LineaCarrito();
+            nuevaLinea.setProducto(producto);
+            nuevaLinea.setCantidad(cantidad);
+            carrito.addLineascarrito(nuevaLinea);
+        }
+
+        // Actualizar el stock del producto
         producto.setStock(producto.getStock() - cantidad);
-
-        lineaCarrito.setProducto(producto);
-        lineaCarrito.setCantidad(cantidad);
-
-        carrito.addLineascarrito(lineaCarrito);
-
         productoRepository.save(producto);
     }
 }

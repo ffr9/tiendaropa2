@@ -71,43 +71,17 @@ public class CarritoService {
                 });
     }
 
-    public void añadirProductos(Carrito carrito, Long productoId, int cantidad)
-            throws ProductoNotFoundException, UsuarioNoLogeadoException {
-        // Verificar si el usuario está logeado
-        if (carrito.getUsuario() == null) {
-            throw new UsuarioNoLogeadoException();
+    public float obtenerTotalCarrito(Carrito carrito) {
+        float total = 0.0f;
+
+        for (LineaCarrito lineaCarrito : carrito.getLineascarrito()) {
+            int cantidad = lineaCarrito.getCantidad();
+            float precioUnitario = lineaCarrito.getProducto().getPrecio();
+            float subtotal = cantidad * precioUnitario;
+            total += subtotal;
         }
 
-        // Obtener el producto
-        //ProductoData productoData = productoService.findById(productoId);
-        Producto producto = productoRepository.findById(productoId).orElse(null);
-        if (producto == null) {
-            throw new ProductoNotFoundException();
-        }
-
-        // Verificar si hay suficiente stock
-        if (producto.getStock() < cantidad) {
-            throw new SinStockException();
-        }
-
-        // Añadir el producto al carrito
-        LineaCarrito lineaCarrito = new LineaCarrito();
-        //carrito.addLineascarrito(lineaCarrito);
-
-        lineaCarrito.setCarrito(carrito);
-        lineaCarrito.setProducto(producto);
-        lineaCarrito.setCantidad(cantidad);
-
-
-        // Actualizar el stock del producto
-        producto.setStock(producto.getStock() - cantidad);
-        productoRepository.save(producto);
-
-
-        // Guardar la línea en el carrito
-        lineaCarritoRepository.save(lineaCarrito);
+        return total;
     }
-
-
-
 }
+
