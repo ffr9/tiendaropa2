@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -83,5 +84,25 @@ public class CarritoService {
 
         return total;
     }
+
+    @Transactional
+    public void eliminarTodasLasLineasCarrito(Carrito carrito) {
+        try {
+            // Verifica que la colección no sea nula
+            if (carrito.getLineascarrito() != null) {
+                // Elimina todas las líneas de carrito asociadas al carrito
+                carrito.getLineascarrito().clear();
+                // Actualiza el carrito en la base de datos para aplicar los cambios
+                carritoRepository.save(carrito);
+            } else {
+                System.out.println("La colección de líneas de carrito es nula.");
+            }
+        } catch (Exception e) {
+            System.err.println("Error al eliminar las líneas de carrito.");
+            e.printStackTrace(); // Imprime la pila de llamadas para obtener más información
+            throw e; // Reenvía la excepción para un manejo adecuado
+        }
+    }
+
 }
 

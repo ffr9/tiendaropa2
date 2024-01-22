@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface LineaCarritoRepository extends CrudRepository<LineaCarrito, Long> {
     List<LineaCarrito> findByCarrito(Carrito carrito);
+    void deleteByCarrito(Carrito carrito);
 }

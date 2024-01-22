@@ -81,4 +81,33 @@ public class CarritoController {
 
         return "redirect:/tiendaropa/catalogo";
     }
+
+    @GetMapping("/tiendaropa/compra/checkout")
+    public String checkout(Model model) {
+        try {
+            Long usuarioId = managerUserSession.usuarioLogeado();
+            UsuarioData user = usuarioService.findById(usuarioId);
+
+            List<Usuario> usuarios = usuarioService.listadoCompleto();
+            Usuario usuario = usuarioService.buscarUsuarioPorId(usuarios, usuarioId);
+
+            System.out.println(usuario);
+
+            // Obtener el carrito del usuario
+            Carrito carrito = carritoService.obtenerCarritoUsuario(usuario);
+
+            System.out.println(carrito.getId());
+
+            // Eliminar todas las líneas del carrito
+            carritoService.eliminarTodasLasLineasCarrito(carrito);
+
+            model.addAttribute("usuario", user);
+
+        } catch (Exception e) {
+            System.err.println("Error durante el proceso de checkout.");
+            e.printStackTrace();
+        }
+
+        return "checkout";
+    }
 }

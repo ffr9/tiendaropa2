@@ -24,10 +24,11 @@
             <div th:each="producto, iterStat : ${productosDestacados}"
                  th:classappend="${iterStat.index == 0} ? 'carousel-item active' : 'carousel-item'">
                 <!-- Contenido del carrusel para cada producto -->
-                <h4 th:text="${producto.nombre}"></h4>
-                <p th:text="'Precio: $' + ${producto.precio}"></p>
-                <img th:src="@{/assets/{productoImg}(productoImg=${producto.img})}" th:alt="'Imagen de ' + ${producto.nombre}" class="imagenes-carrusel"/>
-                <!-- Agrega más atributos o detalles del producto según tu modelo -->
+                <a th:href="@{/tiendaropa/productos/{id}(id=${producto.id})}">
+                    <h4 th:text="${producto.nombre}"></h4>
+                    <p th:text="'Precio: $' + ${producto.precio}"></p>
+                    <img th:src="@{/assets/{productoImg}(productoImg=${producto.img})}" th:alt="'Imagen de ' + ${producto.nombre}" class="imagenes-carrusel"/>
+                </a>
             </div>
         </div>
         <!-- Controles del carrusel -->
@@ -48,10 +49,11 @@
     <div class="row">
         <div class="col-md-4" th:each="producto, iterStat : ${productosDestacados}">
             <div class="card mb-4 shadow-sm tarjeta-producto">
-                <h4 th:text="${producto.nombre}" class="card-title text-center mt-3"></h4>
-                <p th:text="'Precio: $' + ${producto.precio}" class="text-center"></p>
-                <img th:src="@{/assets/{productoImg}(productoImg=${producto.img})}" th:alt="'Imagen de ' + ${producto.nombre}" class="imagenes-celdas"/>
-                <!-- Agrega más detalles del producto si es necesario -->
+                <a th:href="@{/tiendaropa/productos/{id}(id=${producto.id})}">
+                    <h4 th:text="${producto.nombre}" class="card-title text-center mt-3"></h4>
+                    <p th:text="'Precio: $' + ${producto.precio}" class="text-center"></p>
+                    <img th:src="@{/assets/{productoImg}(productoImg=${producto.img})}" th:alt="'Imagen de ' + ${producto.nombre}" class="imagenes-celdas"/>
+                </a>
             </div>
         </div>
     </div>

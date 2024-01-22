@@ -54,10 +54,10 @@ public class LineaCarrito implements Serializable {
 
     public void setCarrito(Carrito carrito) {
         if(this.carrito != carrito) {
-            //this.carrito.setId(carrito.getId());
-            //this.carrito.setUsuario(carrito.getUsuario());
             this.carrito = carrito;
-            //carrito.addLineascarrito(this);
+            this.carrito.setId(carrito.getId());
+            this.carrito.setUsuario(carrito.getUsuario());
+            carrito.addLineascarrito(this);
         }
     }
 
