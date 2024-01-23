@@ -53,6 +53,18 @@
                 </div>
             </li>
         </ul>
+        <hr style="margin-top: 20px; margin-bottom: 20px;">
+        <!-- Formulario para añadir comentarios -->
+        <div th:if="${usuario != null}">
+            <form method="post" th:action="@{/tiendaropa/productos/comentar/{id}(id=${producto.id})}" style="margin-top: 20px;">
+                <div class="form-group">
+                    <label for="nuevoComentario" style="font-weight: bold;">Añadir Comentario:</label>
+                    <textarea class="form-control" id="nuevoComentario" name="nuevoComentario" rows="3" required></textarea>
+                </div>
+                <input type="hidden" name="productoId" th:value="${producto.id}" />
+                <button type="submit" class="btn btn-primary" style="background-color: #007bff;">Añadir Comentario</button>
+            </form>
+        </div>
     </div>
 </div>
 
