@@ -38,8 +38,14 @@
     <div id="totalCompra" class="mt-3">
         <h4>Total: <span th:text="${totalCarrito}"></span></h4>
     </div>
-    <!-- Botón de compra -->
+    <!-- Botón de peticiones post-->
+    <form th:action="@{/tiendaropa/compra/checkout}" method="post">
+        <button type="submit" class="btn btn-primary mt-3">Comprar</button>
+    </form>
+
+    <!-- boton de hacer peticiones get
     <a th:href="@{/tiendaropa/compra/checkout}" class="btn btn-primary mt-3">Comprar</a>
+    -->
 </div>
 
 
