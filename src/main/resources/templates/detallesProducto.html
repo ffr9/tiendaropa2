@@ -31,11 +31,16 @@
             <p th:text="'Stock: ' + ${producto.stock}"></p>
             <p th:text="'Número de referencia: ' + ${producto.numref}"></p>
 
-            <form action="/tiendaropa/carrito" method="post">
-                <input type="hidden" name="productoId" th:value="${producto.id}" />
-                <input type="number" name="cantidad" value="1" min="1" th:max="${producto.stock}" step="1"/>
-                <button type="submit" class="btn btn-primary">Añadir al carrito</button>
-            </form>
+            <div th:if="${usuario != null}">
+                <form action="/tiendaropa/carrito" method="post">
+                    <input type="hidden" name="productoId" th:value="${producto.id}" />
+                    <input type="number" name="cantidad" value="1" min="1" th:max="${producto.stock}" step="1"/>
+                    <button type="submit" class="btn btn-primary">Añadir al carrito</button>
+                </form>
+            </div>
+            <div th:if="${usuario == null}">
+                <p>Inicia sesión para añadir productos al carrito.</p>
+            </div>
 
             <!-- Volver al catálogo -->
             <a class="btn btn-secondary ml-2" th:href="@{/tiendaropa/catalogo}">Volver al catálogo</a>
