@@ -1,5 +1,7 @@
 package tiendaropa.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +34,7 @@ public class CarritoController {
     UsuarioService usuarioService;
 
     private final String API_URL = "https://ebisu.firstrow2.com/api/transactions";
-    private final String API_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTF9.5J3FXZKYWPPs0Cqx9O6R7sEhGXYfmw8onjFqFJt864E";
+    private final String API_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTN9.R5LwbZjBrobQHgxSLf4qovDKEeHmlJJoUDXXEt6OWpc";
 
 
 
@@ -201,7 +203,7 @@ public class CarritoController {
                 model.addAttribute("respuestaAPI", respuestaApi);
 
                 // Devolver el nombre de la plantilla que deseas mostrar (checkout.html)
-                return "checkout";
+                return "transacciones";
             } else {
                 // Si la petición no fue exitosa, manejar el error según tus necesidades
                 System.err.println("Error en la petición GET a la API. Código de estado: " + responseEntity.getStatusCodeValue());
