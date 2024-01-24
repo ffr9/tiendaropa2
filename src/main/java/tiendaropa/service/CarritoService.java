@@ -85,9 +85,6 @@ public class CarritoService {
         return total;
     }
 
-
-
-
     @Transactional
     public void eliminarTodasLasLineasCarrito(Carrito carrito) {
         try {
@@ -100,6 +97,22 @@ public class CarritoService {
         }
     }
 
+    public int obtenerTotalProductosCarrito(Carrito carrito) {
+        int totalProductos = 0;
+
+        try {
+            Set<LineaCarrito> lineasCarrito = carrito.getLineascarrito();
+
+            for (LineaCarrito lineaCarrito : lineasCarrito) {
+                totalProductos += lineaCarrito.getCantidad();
+            }
+        } catch (Exception e) {
+            System.err.println("Error al obtener el total de productos en el carrito.");
+            e.printStackTrace();
+        }
+
+        return totalProductos;
+    }
 
 }
 

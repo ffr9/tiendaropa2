@@ -110,7 +110,7 @@ public class CarritoController {
             Carrito carrito = carritoService.obtenerCarritoUsuario(usuario);
 
             // Realizar la petición POST
-            String respuestaAPI = hacerPeticionPostALaAPI(); // Implementa este método
+            String respuestaAPI = hacerPeticionPostALaAPI(carritoService.obtenerTotalProductosCarrito(carrito)); // Implementa este método
 
             // Aquí puedes manipular la respuesta de la API según tus necesidades
             System.out.println("Respuesta de la API: " + respuestaAPI);
@@ -131,12 +131,12 @@ public class CarritoController {
         return "checkout";
     }
 
-    public String hacerPeticionPostALaAPI() {
+    public String hacerPeticionPostALaAPI(int totalProductos) {
         try {
             // Crear el objeto de datos en el formato JSON
             String jsonBody = "{\n" +
-                    "  \"concept\": \"string\",\n" +
-                    "  \"amount\": 10,\n" +
+                    "  \"concept\": \"compra\",\n" +
+                    "  \"amount\": " + totalProductos + ",\n" +  // Ajustar el campo 'amount'
                     "  \"receipt_number\": \"string\",\n" +
                     "  \"payment\": {\n" +
                     "    \"type\": \"paypal\",\n" +
