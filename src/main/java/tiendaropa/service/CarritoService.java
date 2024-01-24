@@ -102,7 +102,7 @@ public class CarritoService {
 
         try {
             Set<LineaCarrito> lineasCarrito = carrito.getLineascarrito();
-
+            //System.out.println("Tamaño lineasCarrito: " + lineasCarrito.size());
             for (LineaCarrito lineaCarrito : lineasCarrito) {
                 totalProductos += lineaCarrito.getCantidad();
             }
@@ -111,6 +111,7 @@ public class CarritoService {
             e.printStackTrace();
         }
 
+        //System.out.println("Total productos en carrito: " + totalProductos);
         return totalProductos;
     }
 

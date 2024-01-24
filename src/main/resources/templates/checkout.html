@@ -21,7 +21,10 @@
     <!-- boton de hacer peticiones get -->
     <a th:href="@{/tiendaropa/compra/checkout}" class="btn btn-primary mt-3">Ver todas transacciones</a>
 
-
+    <!-- Botón de peticiones post-->
+    <form th:action="@{/tiendaropa/envios}" method="post">
+        <button type="submit" class="btn btn-primary mt-3">Crear envio</button>
+    </form>
 
 </body>
 </html>
