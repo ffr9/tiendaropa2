@@ -39,8 +39,6 @@ public class ProductoController {
     @Autowired
     private ComentarioService comentarioService;
 
-
-
     private boolean comprobarUsuarioLogeado() {
         Long idUsuarioLogeado = managerUserSession.usuarioLogeado();
         if (idUsuarioLogeado == null)
@@ -57,6 +55,7 @@ public class ProductoController {
     @GetMapping("/tiendaropa/catalogo")
     public String mostrarCatalogo(
             @RequestParam(name = "categoriaId", required = false) Long categoriaId,
+            @RequestParam(name = "filtro", required = false) String filtro,
             Model model) {
 
         if(comprobarUsuarioLogeado()) {
@@ -71,11 +70,14 @@ public class ProductoController {
 
         List<ProductoData> productos;
 
-        if (categoriaId != null) {
+        if (filtro != null && !filtro.isEmpty()) {
+            // Si se proporciona un filtro, buscar productos por ese filtro
+            productos = productoService.buscarProductoPorFiltro(filtro);
+        } else if (categoriaId != null) {
             // Si se proporciona una categoría, filtrar por esa categoría
             productos = productoService.buscarProductoPorCategoria(categoriaId);
         } else {
-            // Si no se proporciona ninguna categoría, mostrar todos los productos
+            // Si no se proporciona ninguna categoría ni filtro, mostrar todos los productos
             productos = productoService.allProductos();
         }
 
@@ -86,14 +88,29 @@ public class ProductoController {
 
 
     @GetMapping("/tiendaropa/catalogo/busqueda")
-    public String buscarProducto(@ModelAttribute BusquedaData busquedaData, Model model){
-        if(comprobarUsuarioLogeado()) {
+    public String buscarProducto(
+            @ModelAttribute BusquedaData busquedaData,
+            @RequestParam(name = "q", required = false) String busquedaParametro,
+            Model model) {
+
+        if (comprobarUsuarioLogeado()) {
             UsuarioData usuario = usuarioService.findById(managerUserSession.usuarioLogeado());
             model.addAttribute("usuario", usuario);
-        }else{
+        } else {
             model.addAttribute("usuario", null);
         }
-        List<ProductoData> productos = productoService.buscarProductos(busquedaData.getBusqueda());
+
+        String busqueda;
+
+        // Si se proporciona un parámetro en la URL, usa ese valor
+        if (busquedaParametro != null) {
+            busqueda = busquedaParametro;
+        } else {
+            // De lo contrario, utiliza el valor del formulario
+            busqueda = busquedaData.getBusqueda();
+        }
+
+        List<ProductoData> productos = productoService.buscarProductos(busqueda);
         model.addAttribute("busquedaData", new BusquedaData());
         model.addAttribute("productos", productos);
 
@@ -120,8 +137,6 @@ public class ProductoController {
         //return "catalogo";
     }
 
-
-
     @DeleteMapping("/admin/tiendaropa/productos/{id}")
     @ResponseBody
     public String borrarProducto(@PathVariable(value="id") Long idProducto, RedirectAttributes flash, HttpSession session) {
@@ -134,9 +149,6 @@ public class ProductoController {
         }
         return "redirect:/admin/tiendaropa/catalogo";
     }
-
-
-
 
     @GetMapping("/admin/tiendaropa/productos/{id}/editar")
     public String formEditarProducto(@PathVariable(value="id") Long idProducto, @ModelAttribute ProductoData productoData,
@@ -213,6 +225,24 @@ public class ProductoController {
             return "redirect:/tiendaropa/catalogo?categoriaId=" + categoriaId;
         } else {
             // Si no se selecciona ninguna categoría, mostrar todos los productos
+            return "redirect:/tiendaropa/catalogo";
+        }
+    }
+
+    @GetMapping("/tiendaropa/catalogo/filtro")
+    public String filtrarProductosPorFiltro(
+            @RequestParam(name = "filtro", required = false) String filtro,
+            Model model) {
+
+        // Cargar las categorías desde la base de datos
+        List<Categoria> categorias = categoriaService.listadoCompleto();
+        model.addAttribute("categorias", categorias);
+
+        if (filtro != null && !filtro.isEmpty()) {
+            // Si se proporciona un filtro, redirige a la misma página pero con el parámetro de filtro
+            return "redirect:/tiendaropa/catalogo?filtro=" + filtro;
+        } else {
+            // Si no se proporciona un filtro válido, mostrar todos los productos
             return "redirect:/tiendaropa/catalogo";
         }
     }
@@ -314,19 +344,4 @@ public class ProductoController {
 
         return "redirect:/tiendaropa/productos/" + id;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
