@@ -133,4 +133,16 @@ public class CategoriaService {
         return modelMapper.map(categoriaActualizado, CategoriaData.class);
     }
 
+    @Transactional(readOnly = true)
+    public Long obtenerIdPorNombre(String nombreCategoria) {
+        Optional<Categoria> categoriaOptional = categoriaRepository.findByNombre(nombreCategoria);
+
+        if (categoriaOptional.isPresent()) {
+            return categoriaOptional.get().getId();
+        } else {
+            // Manejar el caso en el que la categoría no se encuentra
+            return null;
+        }
+    }
+
 }

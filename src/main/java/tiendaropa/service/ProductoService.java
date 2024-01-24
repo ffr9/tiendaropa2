@@ -28,12 +28,10 @@ public class ProductoService {
     Logger logger = LoggerFactory.getLogger(ProductoService.class);
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
     private ProductoRepository productoRepository;
 
     @Autowired
-    private ComentarioRepository comentarioRepository;
+    CategoriaService categoriaService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -150,6 +148,26 @@ public class ProductoService {
         return comentariosDTO;
     }
 
+    @Transactional(readOnly = true)
+    public List<ProductoData> buscarProductoPorFiltro(String nombreCategoria) {
+        logger.debug("Buscando productos por nombre de categoría: " + nombreCategoria);
 
+        // Obtener el ID de la categoría basado en el nombre (puedes implementar este método en tu servicio de categoría)
+        Long idCategoria = categoriaService.obtenerIdPorNombre(nombreCategoria);
+
+        if (idCategoria != null) {
+            List<ProductoData> productos = allProductos();
+
+            // Filtrar productos por la categoría proporcionada
+            List<ProductoData> filtrados = productos.stream()
+                    .filter(producto -> idCategoria.equals(producto.getCategoriaid()))
+                    .collect(Collectors.toList());
+
+            return filtrados;
+        } else {
+            logger.warn("No se encontró ninguna categoría con el nombre: " + nombreCategoria);
+            return Collections.emptyList();
+        }
+    }
 
 }
